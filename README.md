@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Local LLM Chat with Ollama
 
-## Getting Started
+이 프로젝트는 Ollama를 활용하여 로컬 환경에서 LLM(Large Language Model)을 실행하는 Next.js 기반 채팅 애플리케이션입니다.
 
-First, run the development server:
+## 프로젝트 개요
+
+이 프로젝트는 다음과 같은 기능을 제공합니다:
+
+- Ollama를 사용한 로컬 LLM 모델 실행
+- 실시간 채팅 인터페이스
+- 다양한 LLM 모델 선택 기능
+- 채팅 기록 저장 및 관리
+
+## 기술 스택
+
+- Frontend: Next.js 14, React, TailwindCSS
+- Backend: Next.js API Routes
+- LLM: Ollama
+- 기타: TypeScript
+
+## 시작하기
+
+### 사전 요구사항
+
+1. [Ollama 설치](https://ollama.ai/download)
+2. Node.js 18.0.0 이상
+3. npm 또는 yarn
+
+### 설치 방법
 
 ```bash
+# 저장소 클론
+git clone [your-repository-url]
+
+# 의존성 설치
+npm install
+# 또는
+yarn install
+
+# 개발 서버 실행
 npm run dev
-# or
+# 또는
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+서버가 실행되면 [http://localhost:3000](http://localhost:3000)에서 애플리케이션을 확인할 수 있습니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 주요 기능
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- 💬 실시간 채팅 인터페이스
+- 🤖 다양한 LLM 모델 지원
+- 💾 채팅 기록 저장
+- 🎨 사용자 친화적인 UI
+- ⚡ 빠른 응답 속도
 
-## Learn More
+## 기여하기
 
-To learn more about Next.js, take a look at the following resources:
+프로젝트 기여는 언제나 환영합니다. 버그 리포트, 새로운 기능 제안 또는 풀 리퀘스트를 통해 참여해주세요.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 라이선스
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+MIT License
 
-## Deploy on Vercel
+## 문의사항
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+문의사항이 있으시면 이슈를 생성해주세요.
