@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 import type { ModelsResponse, Model } from "@/types/models";
 
@@ -19,6 +20,7 @@ export function useModels() {
   } = useQuery({
     queryKey: ["models"],
     queryFn: fetchModels,
+    retry: false,
   });
 
   return {

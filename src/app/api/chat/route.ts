@@ -1,15 +1,27 @@
 import { createOllama } from "ollama-ai-provider";
 import { streamText } from "ai";
 import type { Message } from "ai";
+import { NextResponse } from "next/server";
+
 export async function POST(req: Request) {
-  const { messages }: { messages: Message[] } = await req.json();
+  try {
+    const { messages }: { messages: Message[] } = await req.json();
 
-  const ollama = createOllama({});
+    const ollama = createOllama({});
 
-  const result = streamText({
-    model: ollama("gemma3:12b"),
-    messages: messages,
-  });
+    const model = ollama("gemma3:12b");
 
-  return result.toDataStreamResponse();
+    if (!model) {
+      throw new Error("Model not found");
+    }
+
+    const result = streamText({
+      model: model,
+      messages: messages,
+    });
+
+    return result.toDataStreamResponse();
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }

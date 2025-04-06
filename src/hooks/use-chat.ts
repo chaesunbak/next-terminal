@@ -3,6 +3,7 @@
 import { useChat as useAiChat } from "@ai-sdk/react";
 import { useRef, useEffect } from "react";
 import type { UIMessage } from "ai";
+import { toast } from "sonner";
 
 interface UseChatProps {
   initialMessages: UIMessage[];
@@ -29,6 +30,7 @@ export function useChat({ initialMessages }: UseChatProps) {
     initialMessages,
     onError: (error) => {
       console.error("USE CHAT ERROR", error.message);
+      toast.error(error.message);
     },
   });
 

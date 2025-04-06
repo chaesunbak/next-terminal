@@ -33,20 +33,18 @@ export default function Page() {
         reload={reload}
       />
 
-      <form className="bg-background mx-auto flex w-full gap-2 px-4 pb-4 md:max-w-3xl md:pb-6">
-        <MultimodalInput
-          chatId={id}
-          input={input}
-          setInput={setInput}
-          handleSubmit={handleSubmit}
-          status={status}
-          stop={stop}
-          messages={messages}
-          setMessages={setMessages}
-          append={append}
-          isLoading={isLoading}
-        />
-      </form>
+      <MultimodalInput
+        chatId={id}
+        input={input}
+        setInput={setInput}
+        handleSubmit={handleSubmit}
+        status={status}
+        stop={stop}
+        messages={messages}
+        setMessages={setMessages}
+        append={append}
+        isLoading={isLoading}
+      />
     </div>
   );
 }

@@ -1,8 +1,7 @@
 "use client";
 
 import type { UIMessage } from "ai";
-import type React from "react";
-import { useRef, useCallback, memo } from "react";
+import { useRef } from "react";
 import { toast } from "sonner";
 import { useWindowSize } from "usehooks-ts";
 import { LuArrowUp, LuSquare } from "react-icons/lu";
@@ -27,7 +26,7 @@ interface MultimodalInputProps {
   isLoading: boolean;
 }
 
-function PureMultimodalInput({
+export function MultimodalInput({
   chatId,
   input,
   setInput,
@@ -63,57 +62,47 @@ function PureMultimodalInput({
     }
   };
 
-  const submitForm = useCallback(() => {
+  const submitForm = () => {
     handleSubmit();
     setInput("");
 
     if (width && width > 768) {
       textareaRef.current?.focus();
     }
-  }, [handleSubmit, setInput, width]);
+  };
 
   return (
-    <div className="bg-background fixed bottom-4 left-1/2 flex w-full max-w-2xl -translate-x-1/2 flex-col gap-4 rounded-xl border p-4 has-focus:ring-1 has-focus:ring-offset-0">
-      {messages.length === 0 && <SuggestedActions append={append} />}
+    <div className="bg-background fixed bottom-4 left-1/2 mx-auto flex w-full max-w-2xl -translate-x-1/2 flex-col gap-4 rounded-xl border p-4 px-4 pb-4 has-focus:ring-1 has-focus:ring-offset-0 md:max-w-3xl md:pb-6">
+      {/* {messages.length === 0 && <SuggestedActions append={append} />} */}
+      <form onSubmit={handleSubmit}>
+        <Textarea
+          data-testid="multimodal-input"
+          ref={textareaRef}
+          placeholder="무엇이든 물어보세요"
+          value={input}
+          onChange={handleInput}
+          className={cn(
+            "scrollbar-none max-h-[300px] min-h-[24px] resize-none overflow-y-scroll border-none !text-base shadow-none focus-visible:ring-0",
+            className,
+          )}
+          rows={2}
+          autoFocus
+          onKeyDown={handleKeyDown}
+        />
 
-      <Textarea
-        data-testid="multimodal-input"
-        ref={textareaRef}
-        placeholder="무엇이든 물어보세요"
-        value={input}
-        onChange={handleInput}
-        className={cn(
-          "scrollbar-none max-h-[300px] min-h-[24px] resize-none overflow-y-scroll border-none !text-base shadow-none focus-visible:ring-0",
-          className,
-        )}
-        rows={2}
-        autoFocus
-        onKeyDown={handleKeyDown}
-      />
-
-      <div className="flex w-full justify-end p-2">
-        {status === "submitted" || isLoading ? (
-          <StopButton stop={stop} setMessages={setMessages} />
-        ) : (
-          <SendButton input={input} submitForm={submitForm} />
-        )}
-      </div>
+        <div className="flex w-full justify-end p-2">
+          {status === "submitted" || isLoading ? (
+            <StopButton stop={stop} setMessages={setMessages} />
+          ) : (
+            <SendButton input={input} submitForm={submitForm} />
+          )}
+        </div>
+      </form>
     </div>
   );
 }
 
-export const MultimodalInput = memo(
-  PureMultimodalInput,
-  (prevProps, nextProps) => {
-    if (prevProps.input !== nextProps.input) return false;
-    if (prevProps.status !== nextProps.status) return false;
-    if (prevProps.isLoading !== nextProps.isLoading) return false;
-
-    return true;
-  },
-);
-
-function PureStopButton({
+function StopButton({
   stop,
   setMessages,
 }: {
@@ -135,9 +124,7 @@ function PureStopButton({
   );
 }
 
-const StopButton = memo(PureStopButton);
-
-function PureSendButton({
+function SendButton({
   submitForm,
   input,
 }: {
@@ -158,8 +145,3 @@ function PureSendButton({
     </Button>
   );
 }
-
-const SendButton = memo(PureSendButton, (prevProps, nextProps) => {
-  if (prevProps.input !== nextProps.input) return false;
-  return true;
-});
