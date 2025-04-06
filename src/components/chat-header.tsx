@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useWindowSize } from "usehooks-ts";
 import { LuPlus } from "react-icons/lu";
+import { ModelSelector } from "@/components/model-selector";
 
 import { Button } from "@/components/ui/button";
 
@@ -18,6 +19,8 @@ export function ChatHeader() {
 
   return (
     <header className="bg-background sticky top-0 flex items-center gap-2 px-2 py-1.5 md:px-2">
+      <ModelSelector />
+
       {windowWidth < 768 && (
         <Tooltip>
           <TooltipTrigger asChild>
