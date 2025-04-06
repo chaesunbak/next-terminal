@@ -1,8 +1,8 @@
 import { createOllama } from "ollama-ai-provider";
 import { streamText } from "ai";
-
+import type { Message } from "ai";
 export async function POST(req: Request) {
-  const { messages } = await req.json();
+  const { messages }: { messages: Message[] } = await req.json();
 
   const ollama = createOllama({});
 
