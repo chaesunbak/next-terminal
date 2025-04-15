@@ -8,7 +8,7 @@ interface CodeBlockProps {
 }
 
 export function CodeBlock({
-  node,
+  // node,
   inline,
   className,
   children,

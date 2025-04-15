@@ -1,147 +1,124 @@
 "use client";
 
-import type { UIMessage } from "ai";
 import { useRef } from "react";
-import { toast } from "sonner";
-import { useWindowSize } from "usehooks-ts";
-import { LuArrowUp, LuSquare } from "react-icons/lu";
+import { ArrowUp, Square } from "lucide-react";
 import { UseChatHelpers } from "@ai-sdk/react";
 
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
-import { SuggestedActions } from "./suggested-actions";
 import { cn } from "@/lib/utils";
 
-interface MultimodalInputProps {
-  chatId: string;
-  input: UseChatHelpers["input"];
-  setInput: UseChatHelpers["setInput"];
-  status: UseChatHelpers["status"];
-  stop: () => void;
-  messages: Array<UIMessage>;
-  setMessages: UseChatHelpers["setMessages"];
-  append: UseChatHelpers["append"];
-  handleSubmit: UseChatHelpers["handleSubmit"];
+interface MultimodalInputProps
+  extends Pick<
+    UseChatHelpers,
+    "input" | "setInput" | "handleSubmit" | "isLoading" | "stop" | "setMessages"
+  > {
   className?: string;
-  isLoading: boolean;
 }
 
 export function MultimodalInput({
-  chatId,
   input,
   setInput,
-  status,
-  stop,
-  messages,
-  setMessages,
-  append,
   handleSubmit,
-  className,
   isLoading,
+  stop,
+  setMessages,
+  className,
 }: MultimodalInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const { width } = useWindowSize();
 
   const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(event.target.value);
+
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (
       event.key === "Enter" &&
       !event.shiftKey &&
-      !event.nativeEvent.isComposing
+      !event.nativeEvent.isComposing &&
+      !isLoading
     ) {
       event.preventDefault();
-
-      if (status !== "ready") {
-        toast.error("Please wait for the model to finish its response!");
-      } else {
-        submitForm();
-      }
-    }
-  };
-
-  const submitForm = () => {
-    handleSubmit();
-    setInput("");
-
-    if (width && width > 768) {
-      textareaRef.current?.focus();
+      event.currentTarget.form?.requestSubmit();
     }
   };
 
   return (
-    <div className="bg-background fixed bottom-4 left-1/2 mx-auto flex w-full max-w-2xl -translate-x-1/2 flex-col gap-4 rounded-xl border p-4 px-4 pb-4 has-focus:ring-1 has-focus:ring-offset-0 md:max-w-3xl md:pb-6">
-      {/* {messages.length === 0 && <SuggestedActions append={append} />} */}
-      <form onSubmit={handleSubmit}>
+    <form
+      onSubmit={handleSubmit}
+      className={cn(
+        "bg-background mx-auto mb-4 w-full max-w-xl rounded-xl border p-2 has-focus:ring-1 has-focus:ring-offset-0 md:max-w-3xl",
+        className,
+      )}
+    >
+      <div className="flex items-end gap-2">
         <Textarea
           data-testid="multimodal-input"
           ref={textareaRef}
-          placeholder="무엇이든 물어보세요"
+          placeholder="Type a message..."
           value={input}
           onChange={handleInput}
-          className={cn(
-            "scrollbar-none max-h-[300px] min-h-[24px] resize-none overflow-y-scroll border-none !text-base shadow-none focus-visible:ring-0",
-            className,
-          )}
-          rows={2}
-          autoFocus
           onKeyDown={handleKeyDown}
+          className="flex-1 resize-none border-none bg-transparent py-2 !text-base shadow-none focus-visible:ring-0"
+          rows={1}
+          disabled={isLoading}
+          autoFocus
         />
-
-        <div className="flex w-full justify-end p-2">
-          {status === "submitted" || isLoading ? (
-            <StopButton stop={stop} setMessages={setMessages} />
-          ) : (
-            <SendButton input={input} submitForm={submitForm} />
-          )}
-        </div>
-      </form>
-    </div>
+        {isLoading ? (
+          <StopButton stop={stop} setMessages={setMessages} />
+        ) : (
+          <SendButton input={input} isLoading={isLoading} />
+        )}
+      </div>
+    </form>
   );
 }
 
 function StopButton({
   stop,
-  setMessages,
 }: {
   stop: () => void;
   setMessages: UseChatHelpers["setMessages"];
 }) {
   return (
     <Button
+      type="button"
       data-testid="stop-button"
-      className="h-fit rounded-full border p-1.5 dark:border-zinc-600"
+      variant="ghost"
+      size="icon"
+      className="h-8 w-8 shrink-0 rounded-full"
       onClick={(event) => {
         event.preventDefault();
         stop();
-        setMessages((messages) => messages);
       }}
     >
-      <LuSquare size={14} />
+      <Square size={16} />
     </Button>
   );
 }
 
-function SendButton({
-  submitForm,
+export function SendButton({
   input,
+  isLoading,
 }: {
-  submitForm: () => void;
   input: string;
+  isLoading: boolean;
 }) {
   return (
     <Button
+      type="submit"
       data-testid="send-button"
-      className="h-fit rounded-full border p-1.5 dark:border-zinc-600"
-      onClick={(event) => {
-        event.preventDefault();
-        submitForm();
-      }}
-      disabled={input.length === 0}
+      variant="ghost"
+      size="icon"
+      className="h-8 w-8 shrink-0 rounded-full"
+      disabled={!input.trim() || isLoading}
     >
-      <LuArrowUp size={14} />
+      <ArrowUp size={16} />
     </Button>
   );
 }

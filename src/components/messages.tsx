@@ -1,5 +1,3 @@
-import { memo } from "react";
-import equal from "fast-deep-equal";
 import { UseChatHelpers } from "@ai-sdk/react";
 import type { UIMessage } from "ai";
 
@@ -14,7 +12,7 @@ interface MessagesProps {
   reload: UseChatHelpers["reload"];
 }
 
-function PureMessages({
+export function Messages({
   status,
   messages,
   setMessages,
@@ -54,12 +52,3 @@ function PureMessages({
     </div>
   );
 }
-
-export const Messages = memo(PureMessages, (prevProps, nextProps) => {
-  if (prevProps.status !== nextProps.status) return false;
-  if (prevProps.status && nextProps.status) return false;
-  if (prevProps.messages.length !== nextProps.messages.length) return false;
-  if (!equal(prevProps.messages, nextProps.messages)) return false;
-
-  return true;
-});

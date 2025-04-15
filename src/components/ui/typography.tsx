@@ -62,6 +62,17 @@ export function H4({ children, className, ...props }: TypographyProps) {
   );
 }
 
+export function H5({ children, className, ...props }: TypographyProps) {
+  return (
+    <h5
+      className={cn("text-lg font-semibold tracking-tight", className)}
+      {...props}
+    >
+      {children}
+    </h5>
+  );
+}
+
 export function P({ children, className, ...props }: TypographyProps) {
   return (
     <p
