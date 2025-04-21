@@ -1,11 +1,14 @@
 "use client";
 
-import GridLayout from "react-grid-layout";
+import GridLayout, { WidthProvider } from "react-grid-layout";
+
 import { useWidgetStore } from "@/store/widget-store";
 import { cn } from "@/lib/utils";
 import { Widget } from "./widget";
 import "./react-grid-layout.css";
 import "./react-resizable.css";
+
+const ResponsiveGridLayout = WidthProvider(GridLayout);
 
 interface WidgetGridProps {
   className?: string;
@@ -15,7 +18,7 @@ export function WidgetGrid({ className }: WidgetGridProps) {
   const { widgets, updateLayout } = useWidgetStore((state) => state);
 
   return (
-    <GridLayout
+    <ResponsiveGridLayout
       className={cn("layout", className)}
       layout={widgets.map((widget) => widget.layout)}
       onLayoutChange={(layout) => {
@@ -39,6 +42,6 @@ export function WidgetGrid({ className }: WidgetGridProps) {
           />
         </div>
       ))}
-    </GridLayout>
+    </ResponsiveGridLayout>
   );
 }

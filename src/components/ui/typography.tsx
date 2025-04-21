@@ -10,7 +10,7 @@ export function H1({ children, className, ...props }: TypographyProps) {
   return (
     <h1
       className={cn(
-        "scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl",
+        "scroll-m-20 text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl",
         className,
       )}
       {...props}
@@ -24,7 +24,7 @@ export function H2({ children, className, ...props }: TypographyProps) {
   return (
     <h2
       className={cn(
-        "scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0",
+        "scroll-m-20 pb-2 text-2xl font-semibold tracking-tight first:mt-0 sm:text-2xl lg:text-3xl",
         className,
       )}
       {...props}
@@ -38,7 +38,7 @@ export function H3({ children, className, ...props }: TypographyProps) {
   return (
     <h3
       className={cn(
-        "scroll-m-20 text-2xl font-semibold tracking-tight",
+        "scroll-m-20 text-xl font-semibold tracking-tight sm:text-xl lg:text-2xl",
         className,
       )}
       {...props}
@@ -52,7 +52,7 @@ export function H4({ children, className, ...props }: TypographyProps) {
   return (
     <h4
       className={cn(
-        "scroll-m-20 text-xl font-semibold tracking-tight",
+        "scroll-m-20 text-lg font-semibold tracking-tight sm:text-lg lg:text-xl",
         className,
       )}
       {...props}
@@ -65,7 +65,10 @@ export function H4({ children, className, ...props }: TypographyProps) {
 export function H5({ children, className, ...props }: TypographyProps) {
   return (
     <h5
-      className={cn("text-lg font-semibold tracking-tight", className)}
+      className={cn(
+        "text-base font-semibold tracking-tight sm:text-base lg:text-lg",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -76,7 +79,10 @@ export function H5({ children, className, ...props }: TypographyProps) {
 export function H6({ children, className, ...props }: TypographyProps) {
   return (
     <h6
-      className={cn("text-base font-semibold tracking-tight", className)}
+      className={cn(
+        "text-sm font-semibold tracking-tight sm:text-base",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -87,7 +93,10 @@ export function H6({ children, className, ...props }: TypographyProps) {
 export function P({ children, className, ...props }: TypographyProps) {
   return (
     <p
-      className={cn("leading-7 [&:not(:first-child)]:mt-6", className)}
+      className={cn(
+        "text-sm leading-7 sm:text-base [&:not(:first-child)]:mt-6",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -98,7 +107,10 @@ export function P({ children, className, ...props }: TypographyProps) {
 export function Blockquote({ children, className, ...props }: TypographyProps) {
   return (
     <blockquote
-      className={cn("mt-6 border-l-2 pl-6 italic", className)}
+      className={cn(
+        "mt-6 border-l-2 pl-6 text-sm italic sm:text-base",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -108,7 +120,10 @@ export function Blockquote({ children, className, ...props }: TypographyProps) {
 
 export function Lead({ children, className, ...props }: TypographyProps) {
   return (
-    <p className={cn("text-muted-foreground text-xl", className)} {...props}>
+    <p
+      className={cn("text-muted-foreground text-lg sm:text-xl", className)}
+      {...props}
+    >
       {children}
     </p>
   );
@@ -116,7 +131,10 @@ export function Lead({ children, className, ...props }: TypographyProps) {
 
 export function Large({ children, className, ...props }: TypographyProps) {
   return (
-    <div className={cn("text-lg font-semibold", className)} {...props}>
+    <div
+      className={cn("text-base font-semibold sm:text-lg", className)}
+      {...props}
+    >
       {children}
     </div>
   );
@@ -125,7 +143,7 @@ export function Large({ children, className, ...props }: TypographyProps) {
 export function Small({ children, className, ...props }: TypographyProps) {
   return (
     <small
-      className={cn("text-sm leading-none font-medium", className)}
+      className={cn("text-xs leading-none font-medium sm:text-sm", className)}
       {...props}
     >
       {children}
@@ -135,7 +153,10 @@ export function Small({ children, className, ...props }: TypographyProps) {
 
 export function Muted({ children, className, ...props }: TypographyProps) {
   return (
-    <p className={cn("text-muted-foreground text-sm", className)} {...props}>
+    <p
+      className={cn("text-muted-foreground text-xs sm:text-sm", className)}
+      {...props}
+    >
       {children}
     </p>
   );

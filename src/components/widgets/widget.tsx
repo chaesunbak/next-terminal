@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   Line,
   LineChart,
@@ -19,6 +19,7 @@ import {
 import { H4, H5 } from "@/components/ui/typography";
 import { useWidgetStore } from "@/store/widget-store";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const chartConfig = {
   desktop: {
@@ -34,63 +35,70 @@ interface WidgetProps {
 }
 
 export function Widget({ id, title, dataKey }: WidgetProps) {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
   const { removeWidget } = useWidgetStore((state) => state);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      await fetch(`/api/series/${dataKey}`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.error) {
-            throw new Error(data.error);
-          }
-          setData(data);
-        })
-        .catch((error) => {
-          setError(error.message);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    };
-    fetchData();
-  }, []);
+  const { data, isPending, error } = useQuery({
+    queryKey: ["series", dataKey],
+    queryFn: async () => {
+      try {
+        const res = await fetch(`/api/series/${dataKey}`);
+        const fetchedData = await res.json();
 
-  if (loading) {
+        if (fetchedData.error) {
+          throw new Error(fetchedData.error);
+        }
+
+        console.log("Fetched data:", fetchedData);
+        return fetchedData;
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        throw err;
+      }
+    },
+  });
+
+  if (isPending) {
     return (
-      <div className="p- flex h-full w-full animate-pulse cursor-grab flex-col rounded-lg border bg-slate-100"></div>
+      <Skeleton className="flex h-full w-full animate-pulse cursor-grab flex-col rounded-lg border bg-slate-100 p-2" />
     );
   }
 
   if (error) {
     return (
-      <div className="p- flex h-full w-full cursor-grab flex-col rounded-lg border">
+      <div className="flex h-full w-full cursor-grab flex-col rounded-lg border p-2">
         <H4 className="absolute top-2 left-2 z-10">{title}</H4>
-        <p className="m-auto text-red-500">{error}</p>
+        <p className="m-auto text-red-500">{(error as Error).message}</p>
       </div>
     );
   }
 
-  const observations = data?.observations;
-  const lastObservation =
-    observations && observations.length > 0
-      ? observations[observations.length - 1]
-      : null;
+  if (!data || !data.observations || data.observations.length < 2) {
+    return (
+      <div className="flex h-full w-full cursor-grab flex-col rounded-lg border p-2">
+        <H4 className="absolute top-2 left-2 z-10">{title}</H4>
+        <p className="m-auto">Could not find data</p>
+      </div>
+    );
+  }
+
+  const observations = data.observations;
+  const lastObservation = observations[observations.length - 1];
+
+  console.log("Last observation:", lastObservation);
 
   const isUp =
-    data?.observations[data?.observations.length - 1].value >
-    data?.observations[data?.observations.length - 2].value;
+    observations.length >= 2 &&
+    observations[observations.length - 1].value >
+      observations[observations.length - 2].value;
+
+  console.log("Is value up:", isUp);
 
   return (
-    <div className="flex h-full w-full cursor-grab flex-col rounded-lg border p-2">
+    <div className="group z-100 flex h-full w-full cursor-grab flex-col rounded-lg border p-2">
       <Button
         variant="ghost"
         size="icon"
-        className="cancel-drag absolute top-0.5 right-0.5 z-50 p-0.5 hover:bg-gray-100"
+        className="cancel-drag absolute top-0.5 right-0.5 z-50 flex flex-none items-center justify-center rounded-full opacity-0 group-hover:opacity-100 hover:bg-gray-100 has-[>svg]:p-0.5"
         onClick={() => removeWidget(id)}
       >
         <X className="h-2 w-2" />
@@ -98,7 +106,7 @@ export function Widget({ id, title, dataKey }: WidgetProps) {
       <H4 className="absolute top-2 left-2 z-10">{title}</H4>
       <ChartContainer config={chartConfig} className="flex h-full w-full">
         <LineChart
-          data={data?.observations}
+          data={observations}
           margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
         >
           <defs>
@@ -120,7 +128,9 @@ export function Widget({ id, title, dataKey }: WidgetProps) {
             dataKey="date"
             height={15}
             stroke="#D3D3D3"
-            startIndex={data?.observations.length - 360 * 5}
+            startIndex={
+              observations.length - Math.min(360 * 5, observations.length)
+            }
             className="cancel-drag"
           />
         </LineChart>

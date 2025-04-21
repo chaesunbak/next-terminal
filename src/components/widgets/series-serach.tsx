@@ -82,15 +82,16 @@ export function SeriesSearch({ className }: SeriesSearchProps) {
 
         {/* 검색 결과 */}
         {!isLoading && data?.seriess && (
-          <>
+          <div className="flex flex-col gap-2">
+            <Muted>Search Results</Muted>
             {data.seriess.length > 0 ? (
               data.seriess.map((item) => <Item key={item.id} series={item} />)
             ) : (
               <div className="m-auto flex h-full w-full items-center justify-center">
-                <p className="text-muted-foreground">검색 결과가 없습니다.</p>
+                <p className="text-muted-foreground">No results found.</p>
               </div>
             )}
-          </>
+          </div>
         )}
 
         {/* 에러 메시지 */}

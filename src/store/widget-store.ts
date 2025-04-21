@@ -14,6 +14,7 @@ interface WidgetState {
   addWidget: (widget: Widget) => void;
   removeWidget: (id: string) => void;
   updateLayout: (newLayout: Layout[]) => void;
+  clearWidgets: () => void;
 }
 
 export const useWidgetStore = create<WidgetState>()(
@@ -36,6 +37,7 @@ export const useWidgetStore = create<WidgetState>()(
               widget.layout,
           })),
         })),
+      clearWidgets: () => set({ widgets: [] }),
     }),
     {
       name: "widget-storage",

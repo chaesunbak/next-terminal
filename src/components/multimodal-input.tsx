@@ -1,21 +1,19 @@
 "use client";
 
 import { useRef } from "react";
-import { ArrowUp, Square, Search } from "lucide-react";
+import { ArrowUp, Square } from "lucide-react";
 import { UseChatHelpers } from "@ai-sdk/react";
 
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { cn } from "@/lib/utils";
-import { Toggle } from "./ui/toggle";
+import { ToolToggleGroup } from "./tool-toggle-group";
 
 interface MultimodalInputProps
   extends Pick<
     UseChatHelpers,
-    "input" | "setInput" | "handleSubmit" | "isLoading" | "stop" | "setMessages"
+    "input" | "setInput" | "handleSubmit" | "isLoading" | "stop"
   > {
-  selectedTools: string[];
-  setSelectedTools: (tools: string[]) => void;
   className?: string;
 }
 
@@ -25,10 +23,8 @@ export function MultimodalInput({
   handleSubmit,
   isLoading,
   stop,
-  setMessages,
+
   className,
-  selectedTools,
-  setSelectedTools,
 }: MultimodalInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -74,10 +70,7 @@ export function MultimodalInput({
         autoFocus
       />
       <div className="flex w-full items-end justify-between gap-2 p-2">
-        <ToolButtons
-          selectedTools={selectedTools}
-          setSelectedTools={setSelectedTools}
-        />
+        <ToolToggleGroup />
         <SendButton
           input={input}
           isLoading={isLoading}
@@ -109,101 +102,17 @@ export function SendButton({
       className={cn("h-8 w-8 shrink-0 rounded-lg border", className)}
       disabled={!input.trim()}
       onClick={(e) => {
-        e.preventDefault();
         if (isLoading) {
+          e.preventDefault();
           stop();
         }
       }}
     >
       {isLoading ? (
-        <Square size={16} strokeWidth={3} />
+        <Square size={16} strokeWidth={3} fill="currentColor" />
       ) : (
         <ArrowUp size={16} strokeWidth={3} />
       )}
     </Button>
-  );
-}
-
-function ToolButtons({
-  selectedTools,
-  setSelectedTools,
-  className,
-}: {
-  selectedTools: string[];
-  setSelectedTools: (tools: string[]) => void;
-  className?: string;
-}) {
-  return (
-    <div className={cn("flex gap-2", className)}>
-      <WebSearchButton
-        selectedTools={selectedTools}
-        setSelectedTools={setSelectedTools}
-      />
-      <FredButton
-        selectedTools={selectedTools}
-        setSelectedTools={setSelectedTools}
-      />
-    </div>
-  );
-}
-
-function WebSearchButton({
-  selectedTools,
-  setSelectedTools,
-  className,
-}: {
-  selectedTools: string[];
-  setSelectedTools: (tools: string[]) => void;
-  className?: string;
-}) {
-  return (
-    <Toggle
-      className={cn(
-        "flex shrink-0 items-center gap-1 rounded-4xl border text-xs",
-        className,
-      )}
-      onClick={() => {
-        if (selectedTools.includes("web-search")) {
-          setSelectedTools(
-            selectedTools.filter((tool) => tool !== "web-search"),
-          );
-        } else {
-          setSelectedTools([...selectedTools, "web-search"]);
-        }
-      }}
-      title="Enable Web Search Tool"
-    >
-      <Search size={16} strokeWidth={3} />
-      Search
-    </Toggle>
-  );
-}
-
-function FredButton({
-  selectedTools,
-  setSelectedTools,
-  className,
-}: {
-  selectedTools: string[];
-  setSelectedTools: (tools: string[]) => void;
-  className?: string;
-}) {
-  return (
-    <Toggle
-      className={cn(
-        "flex shrink-0 items-center gap-1 rounded-4xl border text-xs",
-        className,
-      )}
-      onClick={() => {
-        if (selectedTools.includes("fred")) {
-          setSelectedTools(selectedTools.filter((tool) => tool !== "fred"));
-        } else {
-          setSelectedTools([...selectedTools, "fred"]);
-        }
-      }}
-      title="Enable FRED Tool"
-    >
-      FRED
-    </Toggle>
   );
 }

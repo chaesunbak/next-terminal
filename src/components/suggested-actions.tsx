@@ -3,13 +3,16 @@
 import { motion } from "framer-motion";
 import { Button } from "./ui/button";
 import { memo } from "react";
-import { UseChatHelpers } from "@ai-sdk/react";
+import { type UseChatHelpers } from "@ai-sdk/react";
+
+import { cn } from "@/lib/utils";
 
 interface SuggestedActionsProps {
   append: UseChatHelpers["append"];
+  className?: string;
 }
 
-function PureSuggestedActions({ append }: SuggestedActionsProps) {
+function PureSuggestedActions({ append, className }: SuggestedActionsProps) {
   const suggestedActions = [
     {
       title: "What are the advantages",
@@ -36,7 +39,10 @@ function PureSuggestedActions({ append }: SuggestedActionsProps) {
   return (
     <div
       data-testid="suggested-actions"
-      className="grid w-full gap-2 sm:grid-cols-2"
+      className={cn(
+        "grid w-full max-w-full gap-2 overflow-hidden p-2 sm:grid-cols-2",
+        className,
+      )}
     >
       {suggestedActions.map((suggestedAction, index) => (
         <motion.div
@@ -55,10 +61,12 @@ function PureSuggestedActions({ append }: SuggestedActionsProps) {
                 content: suggestedAction.action,
               });
             }}
-            className="h-auto w-full flex-1 items-start justify-start gap-1 rounded-xl border px-4 py-3.5 text-left text-sm sm:flex-col"
+            className="h-auto w-full flex-1 items-start justify-start gap-1 overflow-hidden rounded-xl border px-3 py-3 text-left text-sm sm:flex-col"
           >
-            <span className="font-medium">{suggestedAction.title}</span>
-            <span className="text-muted-foreground">
+            <span className="truncate font-medium">
+              {suggestedAction.title}
+            </span>
+            <span className="text-muted-foreground truncate">
               {suggestedAction.label}
             </span>
           </Button>

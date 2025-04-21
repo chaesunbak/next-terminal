@@ -1,3 +1,7 @@
+"use client";
+
+import { Eraser } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
@@ -9,14 +13,17 @@ import {
   //   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { SeriesSearch } from "./widgets/series-serach";
+import { useWidgetStore } from "@/store/widget-store";
+import { Button } from "@/components/ui/button";
 
 interface AppNavigationMenuProps {
   className?: string;
 }
 
 export function AppNavigationMenu({ className }: AppNavigationMenuProps) {
+  const { clearWidgets } = useWidgetStore((state) => state);
   return (
-    <NavigationMenu className={cn(className)}>
+    <NavigationMenu className={cn("flex w-full justify-between", className)}>
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger>
@@ -27,6 +34,15 @@ export function AppNavigationMenu({ className }: AppNavigationMenuProps) {
           </NavigationMenuContent>
         </NavigationMenuItem>
       </NavigationMenuList>
+      <Button
+        onClick={clearWidgets}
+        variant="ghost"
+        size="icon"
+        title="Clear Widgets"
+        className="flex-none"
+      >
+        <Eraser className="h-4 w-4" />
+      </Button>
     </NavigationMenu>
   );
 }

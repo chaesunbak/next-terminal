@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { AppNavigationMenu } from "@/components/app-navigation-menu";
+import { QueryClientProvider } from "@/providers/query-client-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,9 +27,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
       >
-        <AppNavigationMenu className="flex w-full flex-none p-2" />
-        {children}
-        <Toaster richColors />
+        <QueryClientProvider>
+          <AppNavigationMenu className="flex w-full flex-none p-2" />
+          {children}
+          <Toaster richColors />
+        </QueryClientProvider>
       </body>
     </html>
   );

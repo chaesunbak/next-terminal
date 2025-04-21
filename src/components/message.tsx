@@ -1,10 +1,12 @@
 "use client";
 
+import { memo } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import type { UIMessage } from "ai";
 import { UseChatHelpers } from "@ai-sdk/react";
 import clsx from "clsx";
 import { Check, Clipboard } from "lucide-react";
+import equal from "fast-deep-equal";
 // import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
@@ -25,7 +27,7 @@ interface MessageProps {
   reload: UseChatHelpers["reload"];
 }
 
-export function Message({
+function PureMessage({
   message,
   isLoading,
   // setMessages,
@@ -53,6 +55,7 @@ export function Message({
         animate={{ y: 0, opacity: 1 }}
       >
         <div
+          key={message.id}
           className={clsx(
             "flex flex-col gap-2 rounded-xl px-4 py-2 whitespace-pre-wrap",
             {
@@ -184,3 +187,11 @@ export function Message({
     </AnimatePresence>
   );
 }
+
+export const Message = memo(PureMessage, (prevProps, nextProps) => {
+  if (prevProps.isLoading !== nextProps.isLoading) return false;
+  if (prevProps.message.id !== nextProps.message.id) return false;
+  if (!equal(prevProps.message.parts, nextProps.message.parts)) return false;
+
+  return true;
+});
