@@ -107,7 +107,9 @@ export function Message({
                     if (content.length === 1) {
                       children = content[0].text;
                     } else {
-                      children = content.map((item) => item.text).join("\n");
+                      children = content
+                        .map((item: any) => item.text)
+                        .join("\n");
                     }
 
                     if (toolName === "fetch_series_data") {
