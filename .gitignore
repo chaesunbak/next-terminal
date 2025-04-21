@@ -31,7 +31,12 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env*
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+!.env.example
 
 # vercel
 .vercel
@@ -40,5 +45,44 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# chats
-.chats
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+*.mo
+*.pot
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+instance/
+.webassets-cache
+
+# Python virtual environments
+.venv/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# uv
+.uv/
+__pypackages__/
+
+# Fred tool specific
+output/
+*.csv

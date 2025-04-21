@@ -40,7 +40,7 @@ export async function POST(req: Request) {
       command: "uv",
       args: [
         "--directory",
-        "/Users/chaemunseong/mcp/WM_MCP",
+        "./src/tools/fred",
         "run",
         "fred_macroeco_server.py",
       ],
