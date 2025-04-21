@@ -1,34 +1,69 @@
-// import { createOllama } from "ollama-ai-provider";
 import { streamText, type Message, createIdGenerator } from "ai";
 import { NextResponse } from "next/server";
 import { experimental_createMCPClient as createMCPClient } from "ai";
-import { openai } from "@ai-sdk/openai";
+import { Experimental_StdioMCPTransport as StdioMCPTransport } from "ai/mcp-stdio";
+import { createVertex } from "@ai-sdk/google-vertex";
 
 export async function POST(req: Request) {
   try {
-    const { messages }: { messages: Message[] } = await req.json();
+    const {
+      messages,
+      tools: selectedTools = [],
+    }: { messages: Message[]; tools?: string[] } = await req.json();
 
-    const model = openai("gpt-4o-mini");
+    const vertex = createVertex({
+      project: "ir-agent",
+      location: "us-central1",
+      googleAuthOptions: {
+        credentials: {
+          client_email: process.env.GOOGLE_CLIENT_EMAIL,
+          private_key:
+            process.env.GOOGLE_PRIVATE_KEY?.split(String.raw`\n`).join("\n") ??
+            "",
+        },
+      },
+    });
+
+    const searchTool = selectedTools.includes("web-search");
+
+    const model = vertex("gemini-2.5-pro-exp-03-25", {
+      useSearchGrounding: searchTool,
+    });
 
     if (!model) {
       throw new Error("Model not found");
     }
 
-    const mcpClient = await createMCPClient({
-      transport: {
-        type: "sse",
-        url: "http://localhost:8000",
-      },
+    let activeTools = {};
+
+    const transport = new StdioMCPTransport({
+      command: "uv",
+      args: [
+        "--directory",
+        "/Users/chaemunseong/mcp/WM_MCP",
+        "run",
+        "fred_macroeco_server.py",
+      ],
     });
 
-    const toolSet = await mcpClient.tools();
+    const mcpClient = await createMCPClient({
+      transport,
+    });
 
-    const tools = { ...toolSet };
+    const toolSet = await mcpClient.tools({
+      schemas: "automatic",
+    });
+
+    if (selectedTools.includes("fred")) {
+      activeTools = { ...toolSet };
+    }
 
     const result = streamText({
       model: model,
       messages: messages,
-      tools: tools,
+      tools: activeTools,
+      maxSteps: 5,
+      toolCallStreaming: true,
       onError({ error }) {
         console.error(error);
       },
@@ -37,14 +72,14 @@ export async function POST(req: Request) {
         prefix: "msgs",
         size: 16,
       }),
+      onFinish: async () => {
+        await mcpClient.close();
+      },
     });
-
-    // consume the stream to ensure it runs to completion & triggers onFinish
-    // even when the client response is aborted:
-    result.consumeStream(); // no await
 
     return result.toDataStreamResponse({
       getErrorMessage: errorHandler,
+      sendReasoning: true,
     });
   } catch (error: any) {
     console.error(error.message);

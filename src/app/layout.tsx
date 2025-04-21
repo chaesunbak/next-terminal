@@ -1,12 +1,9 @@
-import type { Metadata } from "next";
+import { type Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { cookies } from "next/headers";
 
 import "./globals.css";
-import { QueryProvider } from "@/providers/query-provider";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
 import { Toaster } from "@/components/ui/sonner";
+import { AppNavigationMenu } from "@/components/app-navigation-menu";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,26 +20,15 @@ export const metadata: Metadata = {
   description: "AI Chatbot",
 };
 
-export default async function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const cookieStore = await cookies();
-  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
-
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
       >
-        <QueryProvider>
-          <SidebarProvider defaultOpen={defaultOpen}>
-            <AppSidebar />
-            {children}
-          </SidebarProvider>
-        </QueryProvider>
-        <Toaster />
+        <AppNavigationMenu className="flex w-full flex-none p-2" />
+        {children}
+        <Toaster richColors />
       </body>
     </html>
   );

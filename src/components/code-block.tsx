@@ -1,34 +1,39 @@
-"use client";
+import { type ReactNode } from "react";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
+
+import { cn } from "@/lib/utils";
 
 interface CodeBlockProps {
-  node: any;
-  inline: boolean;
+  children: ReactNode;
+  inline?: boolean;
   className: string;
-  children: any;
 }
 
-export function CodeBlock({
-  // node,
-  inline,
-  className,
-  children,
-  ...props
-}: CodeBlockProps) {
+export function CodeBlock({ className, children, ...props }: CodeBlockProps) {
+  const inline =
+    !(children as string).includes("\n") && (children as string).length <= 100;
+
+  const language = /language-(\w+)/.exec(className || "");
+
   if (!inline) {
     return (
-      <div className="not-prose flex flex-col">
-        <pre
-          {...props}
-          className={`w-full overflow-x-auto rounded-xl border border-zinc-200 p-4 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50`}
-        >
-          <code className="break-words whitespace-pre-wrap">{children}</code>
-        </pre>
-      </div>
+      <SyntaxHighlighter
+        style={dracula}
+        PreTag="div"
+        language={language?.[1]}
+        {...props}
+      >
+        {children as string}
+      </SyntaxHighlighter>
     );
   } else {
     return (
       <code
-        className={`${className} rounded-md bg-zinc-100 px-1 py-0.5 text-sm dark:bg-zinc-800`}
+        className={cn(
+          "inline rounded-md bg-zinc-100 px-1 py-0.5 text-sm whitespace-nowrap dark:bg-zinc-800",
+          className,
+        )}
         {...props}
       >
         {children}

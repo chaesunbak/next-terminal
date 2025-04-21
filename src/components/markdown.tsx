@@ -2,8 +2,10 @@ import Link from "next/link";
 import { memo } from "react";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 
 import { CodeBlock } from "./code-block";
+import { H1, H2, H3, H4, H5, H6 } from "./ui/typography";
 
 const components: Partial<Components> = {
   // @ts-expect-error
@@ -11,26 +13,39 @@ const components: Partial<Components> = {
   pre: ({ children }) => <>{children}</>,
   ol: ({ children, ...props }) => {
     return (
-      <ol className="ml-4 list-outside list-decimal" {...props}>
+      <ol
+        className="ml-4 flex list-outside list-decimal flex-col gap-2"
+        {...props}
+      >
         {children}
       </ol>
     );
   },
   li: ({ children, ...props }) => {
     return (
-      <li className="py-1" {...props}>
-        {children}
+      <li className="flex flex-col gap-2 py-1" {...props}>
+        <div>{children}</div>
       </li>
     );
   },
   ul: ({ children, ...props }) => {
     return (
-      <ul className="ml-4 list-outside list-decimal" {...props}>
+      <ul
+        className="ml-4 flex list-outside list-disc flex-col gap-2"
+        {...props}
+      >
         {children}
       </ul>
     );
   },
   strong: ({ children, ...props }) => {
+    return (
+      <span className="font-semibold" {...props}>
+        {children}
+      </span>
+    );
+  },
+  em: ({ children, ...props }) => {
     return (
       <span className="font-semibold" {...props}>
         {children}
@@ -51,46 +66,22 @@ const components: Partial<Components> = {
     );
   },
   h1: ({ children, ...props }) => {
-    return (
-      <h1 className="mt-6 mb-2 text-3xl font-semibold" {...props}>
-        {children}
-      </h1>
-    );
+    return <H1 {...props}>{children}</H1>;
   },
   h2: ({ children, ...props }) => {
-    return (
-      <h2 className="mt-6 mb-2 text-2xl font-semibold" {...props}>
-        {children}
-      </h2>
-    );
+    return <H2 {...props}>{children}</H2>;
   },
   h3: ({ children, ...props }) => {
-    return (
-      <h3 className="mt-6 mb-2 text-xl font-semibold" {...props}>
-        {children}
-      </h3>
-    );
+    return <H3 {...props}>{children} </H3>;
   },
   h4: ({ children, ...props }) => {
-    return (
-      <h4 className="mt-6 mb-2 text-lg font-semibold" {...props}>
-        {children}
-      </h4>
-    );
+    return <H4 {...props}>{children} </H4>;
   },
   h5: ({ children, ...props }) => {
-    return (
-      <h5 className="mt-6 mb-2 text-base font-semibold" {...props}>
-        {children}
-      </h5>
-    );
+    return <H5 {...props}>{children} </H5>;
   },
   h6: ({ children, ...props }) => {
-    return (
-      <h6 className="mt-6 mb-2 text-sm font-semibold" {...props}>
-        {children}
-      </h6>
-    );
+    return <H6 {...props}>{children} </H6>;
   },
 };
 
@@ -98,7 +89,11 @@ const remarkPlugins = [remarkGfm];
 
 const NonMemoizedMarkdown = ({ children }: { children: string }) => {
   return (
-    <ReactMarkdown remarkPlugins={remarkPlugins} components={components}>
+    <ReactMarkdown
+      remarkPlugins={remarkPlugins}
+      rehypePlugins={[rehypeRaw]}
+      components={components}
+    >
       {children}
     </ReactMarkdown>
   );

@@ -1,18 +1,21 @@
 "use client";
 
 import { useRef } from "react";
-import { ArrowUp, Square } from "lucide-react";
+import { ArrowUp, Square, Search } from "lucide-react";
 import { UseChatHelpers } from "@ai-sdk/react";
 
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { cn } from "@/lib/utils";
+import { Toggle } from "./ui/toggle";
 
 interface MultimodalInputProps
   extends Pick<
     UseChatHelpers,
     "input" | "setInput" | "handleSubmit" | "isLoading" | "stop" | "setMessages"
   > {
+  selectedTools: string[];
+  setSelectedTools: (tools: string[]) => void;
   className?: string;
 }
 
@@ -24,6 +27,8 @@ export function MultimodalInput({
   stop,
   setMessages,
   className,
+  selectedTools,
+  setSelectedTools,
 }: MultimodalInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -52,73 +57,153 @@ export function MultimodalInput({
     <form
       onSubmit={handleSubmit}
       className={cn(
-        "bg-background mx-auto mb-4 w-full max-w-xl rounded-xl border p-2 has-focus:ring-1 has-focus:ring-offset-0 md:max-w-3xl",
+        "bg-background mb-4 flex flex-col items-center gap-2 rounded-lg border has-focus:ring-1 has-focus:ring-offset-0",
         className,
       )}
     >
-      <div className="flex items-end gap-2">
-        <Textarea
-          data-testid="multimodal-input"
-          ref={textareaRef}
-          placeholder="Type a message..."
-          value={input}
-          onChange={handleInput}
-          onKeyDown={handleKeyDown}
-          className="flex-1 resize-none border-none bg-transparent py-2 !text-base shadow-none focus-visible:ring-0"
-          rows={1}
-          disabled={isLoading}
-          autoFocus
+      <Textarea
+        data-testid="multimodal-input"
+        ref={textareaRef}
+        placeholder="Ask me anything"
+        value={input}
+        onChange={handleInput}
+        onKeyDown={handleKeyDown}
+        className="max-h-[150px] w-full resize-none overflow-y-auto border-none bg-transparent py-2 !text-base shadow-none focus-visible:ring-0"
+        rows={1}
+        disabled={isLoading}
+        autoFocus
+      />
+      <div className="flex w-full items-end justify-between gap-2 p-2">
+        <ToolButtons
+          selectedTools={selectedTools}
+          setSelectedTools={setSelectedTools}
         />
-        {isLoading ? (
-          <StopButton stop={stop} setMessages={setMessages} />
-        ) : (
-          <SendButton input={input} isLoading={isLoading} />
-        )}
+        <SendButton
+          input={input}
+          isLoading={isLoading}
+          stop={stop}
+          className=""
+        />
       </div>
     </form>
   );
 }
 
-function StopButton({
+export function SendButton({
   stop,
+  input,
+  isLoading,
+  className,
 }: {
+  input: string;
+  isLoading: boolean;
   stop: () => void;
-  setMessages: UseChatHelpers["setMessages"];
+  className?: string;
 }) {
   return (
     <Button
-      type="button"
-      data-testid="stop-button"
+      type={isLoading ? "button" : "submit"}
+      data-testid={isLoading ? "stop-button" : "send-button"}
       variant="ghost"
       size="icon"
-      className="h-8 w-8 shrink-0 rounded-full"
-      onClick={(event) => {
-        event.preventDefault();
-        stop();
+      className={cn("h-8 w-8 shrink-0 rounded-lg border", className)}
+      disabled={!input.trim()}
+      onClick={(e) => {
+        e.preventDefault();
+        if (isLoading) {
+          stop();
+        }
       }}
     >
-      <Square size={16} />
+      {isLoading ? (
+        <Square size={16} strokeWidth={3} />
+      ) : (
+        <ArrowUp size={16} strokeWidth={3} />
+      )}
     </Button>
   );
 }
 
-export function SendButton({
-  input,
-  isLoading,
+function ToolButtons({
+  selectedTools,
+  setSelectedTools,
+  className,
 }: {
-  input: string;
-  isLoading: boolean;
+  selectedTools: string[];
+  setSelectedTools: (tools: string[]) => void;
+  className?: string;
 }) {
   return (
-    <Button
-      type="submit"
-      data-testid="send-button"
-      variant="ghost"
-      size="icon"
-      className="h-8 w-8 shrink-0 rounded-full"
-      disabled={!input.trim() || isLoading}
+    <div className={cn("flex gap-2", className)}>
+      <WebSearchButton
+        selectedTools={selectedTools}
+        setSelectedTools={setSelectedTools}
+      />
+      <FredButton
+        selectedTools={selectedTools}
+        setSelectedTools={setSelectedTools}
+      />
+    </div>
+  );
+}
+
+function WebSearchButton({
+  selectedTools,
+  setSelectedTools,
+  className,
+}: {
+  selectedTools: string[];
+  setSelectedTools: (tools: string[]) => void;
+  className?: string;
+}) {
+  return (
+    <Toggle
+      className={cn(
+        "flex shrink-0 items-center gap-1 rounded-4xl border text-xs",
+        className,
+      )}
+      onClick={() => {
+        if (selectedTools.includes("web-search")) {
+          setSelectedTools(
+            selectedTools.filter((tool) => tool !== "web-search"),
+          );
+        } else {
+          setSelectedTools([...selectedTools, "web-search"]);
+        }
+      }}
+      title="Enable Web Search Tool"
     >
-      <ArrowUp size={16} />
-    </Button>
+      <Search size={16} strokeWidth={3} />
+      Search
+    </Toggle>
+  );
+}
+
+function FredButton({
+  selectedTools,
+  setSelectedTools,
+  className,
+}: {
+  selectedTools: string[];
+  setSelectedTools: (tools: string[]) => void;
+  className?: string;
+}) {
+  return (
+    <Toggle
+      className={cn(
+        "flex shrink-0 items-center gap-1 rounded-4xl border text-xs",
+        className,
+      )}
+      onClick={() => {
+        if (selectedTools.includes("fred")) {
+          setSelectedTools(selectedTools.filter((tool) => tool !== "fred"));
+        } else {
+          setSelectedTools([...selectedTools, "fred"]);
+        }
+      }}
+      title="Enable FRED Tool"
+    >
+      FRED
+    </Toggle>
   );
 }
