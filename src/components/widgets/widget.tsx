@@ -103,7 +103,7 @@ export function Widget({ id, title, dataKey }: WidgetProps) {
       >
         <X className="h-2 w-2" />
       </Button>
-      <H4 className="absolute top-2 left-2 z-10">{title}</H4>
+      <H4 className="absolute top-2 left-2 z-10 leading-none">{title}</H4>
       <ChartContainer config={chartConfig} className="flex h-full w-full">
         <LineChart
           data={observations}

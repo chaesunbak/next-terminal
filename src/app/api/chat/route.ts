@@ -3,13 +3,14 @@ import { NextResponse } from "next/server";
 import { experimental_createMCPClient as createMCPClient } from "ai";
 import { Experimental_StdioMCPTransport as StdioMCPTransport } from "ai/mcp-stdio";
 import { createVertex } from "@ai-sdk/google-vertex";
+import { type Tool } from "@/store/tool-store";
 
 export async function POST(req: Request) {
   try {
     const {
       messages,
       tools: selectedTools = [],
-    }: { messages: Message[]; tools?: string[] } = await req.json();
+    }: { messages: Message[]; tools?: Tool[] } = await req.json();
 
     const vertex = createVertex({
       project: "ir-agent",
@@ -24,10 +25,10 @@ export async function POST(req: Request) {
       },
     });
 
-    const searchTool = selectedTools.includes("web-search");
+    // const searchTool = selectedTools.includes("websearch");
 
     const model = vertex("gemini-2.5-pro-exp-03-25", {
-      useSearchGrounding: searchTool,
+      // useSearchGrounding: searchTool,
     });
 
     if (!model) {
@@ -36,7 +37,7 @@ export async function POST(req: Request) {
 
     let activeTools = {};
 
-    const transport = new StdioMCPTransport({
+    const fredTransport = new StdioMCPTransport({
       command: "uv",
       args: [
         "--directory",
@@ -46,20 +47,39 @@ export async function POST(req: Request) {
       ],
     });
 
-    const mcpClient = await createMCPClient({
-      transport,
+    const fredMcpClient = await createMCPClient({
+      transport: fredTransport,
     });
 
-    const toolSet = await mcpClient.tools({
+    const fredToolSet = await fredMcpClient.tools({
+      schemas: "automatic",
+    });
+
+    const alphaVantageTransport = new StdioMCPTransport({
+      command: "uv",
+      args: ["--directory", "./src/tools/alphavantage", "run", "alphavantage"],
+    });
+
+    const alphaVantageMcpClient = await createMCPClient({
+      transport: alphaVantageTransport,
+    });
+
+    const alphaVantageToolSet = await alphaVantageMcpClient.tools({
       schemas: "automatic",
     });
 
     if (selectedTools.includes("fred")) {
-      activeTools = { ...toolSet };
+      activeTools = { ...fredToolSet };
+    }
+
+    if (selectedTools.includes("alphavantage")) {
+      activeTools = { ...alphaVantageToolSet };
     }
 
     const result = streamText({
       model: model,
+      system:
+        "You are a helpful assistant that can answer questions and help with tasks about investing. Use the tools provided to answer questions and help with tasks.",
       messages: messages,
       tools: activeTools,
       maxSteps: 5,
@@ -73,7 +93,8 @@ export async function POST(req: Request) {
         size: 16,
       }),
       onFinish: async () => {
-        await mcpClient.close();
+        await fredMcpClient.close();
+        await alphaVantageMcpClient.close();
       },
     });
 

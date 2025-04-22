@@ -4,35 +4,53 @@ import { motion } from "framer-motion";
 import { Button } from "./ui/button";
 import { memo } from "react";
 import { type UseChatHelpers } from "@ai-sdk/react";
-
+import { type Tool } from "@/store/tool-store";
 import { cn } from "@/lib/utils";
+import { useToolStore } from "@/store/tool-store";
 
 interface SuggestedActionsProps {
   append: UseChatHelpers["append"];
   className?: string;
 }
 
+interface SuggestedAction {
+  title: string;
+  label: string;
+  tools: Tool[];
+  action: string;
+}
+
 function PureSuggestedActions({ append, className }: SuggestedActionsProps) {
-  const suggestedActions = [
+  const { setSelectedTools } = useToolStore();
+
+  const suggestedActions: SuggestedAction[] = [
     {
-      title: "What are the advantages",
-      label: "of using Next.js?",
-      action: "What are the advantages of using Next.js?",
+      title: "Current Yield Curve",
+      label: "Is it inverted?",
+      tools: ["fred"],
+      action:
+        "First, can you help me find the relevant treasury yield indicators in FRED? Then analyze the current yield curve and tell me if it's inverted or not. What does this suggest about the economy?",
     },
     {
-      title: "Write code to",
-      label: `demonstrate djikstra's algorithm`,
-      action: `Write code to demonstrate djikstra's algorithm`,
+      title: "Inflation Trend",
+      label: "CPI and core inflation",
+      tools: ["fred"],
+      action:
+        "Can you search for CPI and core inflation indicators in FRED? Then show me the recent inflation trends over the past 12 months. Are inflation rates increasing or decreasing?",
     },
     {
-      title: "Help me write an essay",
-      label: `about silicon valley`,
-      action: `Help me write an essay about silicon valley`,
+      title: "Stock Performance",
+      label: "Top tech companies",
+      tools: ["alphavantage"],
+      action:
+        "Could you look up the stock performance of major tech companies like Apple, Microsoft, and Google using AlphaVantage? Which one has performed the best over the past 3 months?",
     },
     {
-      title: "What is the weather",
-      label: "in San Francisco?",
-      action: "What is the weather in San Francisco?",
+      title: "Economic Health Check",
+      label: "GDP and unemployment",
+      tools: ["fred"],
+      action:
+        "Please help me find GDP growth rate and unemployment rate indicators in FRED. What do these indicators tell us about the current state of the economy?",
     },
   ];
 
@@ -56,6 +74,8 @@ function PureSuggestedActions({ append, className }: SuggestedActionsProps) {
           <Button
             variant="ghost"
             onClick={async () => {
+              setSelectedTools(suggestedAction.tools);
+              await new Promise((resolve) => setTimeout(resolve, 1000));
               append({
                 role: "user",
                 content: suggestedAction.action,

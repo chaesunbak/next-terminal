@@ -1,12 +1,14 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+export type Tool = "fred" | "alphavantage";
+
 interface ToolState {
-  selectedTools: string[];
-  setSelectedTools: (tools: string[]) => void;
-  addTool: (tool: string) => void;
-  removeTool: (tool: string) => void;
-  toggleTool: (tool: string) => void;
+  selectedTools: Tool[];
+  setSelectedTools: (tools: Tool[]) => void;
+  addTool: (tool: Tool) => void;
+  removeTool: (tool: Tool) => void;
+  toggleTool: (tool: Tool) => void;
   clearTools: () => void;
 }
 
@@ -15,21 +17,21 @@ export const useToolStore = create<ToolState>()(
     (set) => ({
       selectedTools: [],
 
-      setSelectedTools: (tools: string[]) => set({ selectedTools: tools }),
+      setSelectedTools: (tools: Tool[]) => set({ selectedTools: tools }),
 
-      addTool: (tool: string) =>
+      addTool: (tool: Tool) =>
         set((state) => ({
           selectedTools: state.selectedTools.includes(tool)
             ? state.selectedTools
             : [...state.selectedTools, tool],
         })),
 
-      removeTool: (tool: string) =>
+      removeTool: (tool: Tool) =>
         set((state) => ({
           selectedTools: state.selectedTools.filter((t) => t !== tool),
         })),
 
-      toggleTool: (tool: string) =>
+      toggleTool: (tool: Tool) =>
         set((state) => ({
           selectedTools: state.selectedTools.includes(tool)
             ? state.selectedTools.filter((t) => t !== tool)

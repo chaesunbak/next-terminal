@@ -27,10 +27,24 @@ export function AppNavigationMenu({ className }: AppNavigationMenuProps) {
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger>
-            FRED : Economic Indicators
+            <span className="hidden sm:inline">FRED : Economic Indicators</span>
+            <span className="sm:hidden">FRED</span>
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <SeriesSearch className="min-w-md" />
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>
+            <span className="hidden sm:inline">
+              Alpha Vantage : Stock Market Data
+            </span>
+            <span className="sm:hidden">Alpha Vantage</span>
+          </NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <div className="min-w-md">Alpha Vantage : Stock Market Data</div>
           </NavigationMenuContent>
         </NavigationMenuItem>
       </NavigationMenuList>

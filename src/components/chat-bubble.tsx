@@ -22,7 +22,7 @@ export function ChatBubble() {
     >
       <Chat
         className={clsx(
-          "h-full max-h-[90vh] w-full transition-all duration-300",
+          "h-full max-h-[90vh] w-full max-w-md transition-all duration-300",
           isOpen ? "opacity-100" : "opacity-0",
         )}
       />

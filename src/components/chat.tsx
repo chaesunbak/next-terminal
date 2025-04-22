@@ -89,7 +89,7 @@ export function Chat({ className }: ChatProps) {
         </Button>
       </div>
 
-      <div className="scrollbar-thin w-full flex-1 space-y-4 overflow-y-auto px-4 py-3">
+      <div className="scrollbar-thin w-full flex-1 space-y-2 overflow-y-auto px-4 py-3">
         {messages.length === 0 && (
           <Overview className="z-40 flex items-center justify-center" />
         )}
@@ -111,7 +111,7 @@ export function Chat({ className }: ChatProps) {
         handleSubmit={handleSubmit}
         stop={stop}
         isLoading={isLoading}
-        className="mx-2 min-w-md"
+        className="mx-2 min-w-sm"
       />
     </section>
   );

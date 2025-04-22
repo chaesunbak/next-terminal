@@ -5,7 +5,7 @@ import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 
 import { CodeBlock } from "./code-block";
-import { H1, H2, H3, H4, H5, H6 } from "./ui/typography";
+import { H1, H2, H3, H4, H5, H6, P } from "./ui/typography";
 
 const components: Partial<Components> = {
   // @ts-expect-error
@@ -14,7 +14,7 @@ const components: Partial<Components> = {
   ol: ({ children, ...props }) => {
     return (
       <ol
-        className="ml-4 flex list-outside list-decimal flex-col gap-2"
+        className="ml-2 flex list-outside list-decimal flex-col gap-2"
         {...props}
       >
         {children}
@@ -31,7 +31,7 @@ const components: Partial<Components> = {
   ul: ({ children, ...props }) => {
     return (
       <ul
-        className="ml-4 flex list-outside list-disc flex-col gap-2"
+        className="ml-2 flex list-outside list-disc flex-col gap-2"
         {...props}
       >
         {children}
@@ -82,6 +82,9 @@ const components: Partial<Components> = {
   },
   h6: ({ children, ...props }) => {
     return <H6 {...props}>{children} </H6>;
+  },
+  p: ({ children, ...props }) => {
+    return <P {...props}>{children} </P>;
   },
 };
 

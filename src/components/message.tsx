@@ -50,14 +50,14 @@ function PureMessage({
   return (
     <AnimatePresence>
       <motion.div
-        className="group flex w-full max-w-md flex-col items-start justify-start gap-2"
+        className="group flex w-full max-w-md flex-col items-start justify-start space-y-2"
         initial={{ y: 5, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
       >
         <div
           key={message.id}
           className={clsx(
-            "flex flex-col gap-2 rounded-xl px-4 py-2 whitespace-pre-wrap",
+            "flex flex-col space-y-2 rounded-xl px-4 py-2 whitespace-pre-wrap",
             {
               "bg-primary text-primary-foreground": message.role === "user",
               "text-primary bg-gray-100": message.role === "assistant",
@@ -126,12 +126,13 @@ function PureMessage({
                             type="single"
                             collapsible
                             key={part.toolInvocation.toolCallId}
+                            asChild
                           >
                             <AccordionItem value="item-1">
-                              <AccordionTrigger className="text-muted-foreground flex cursor-pointer hover:underline">
+                              <AccordionTrigger className="text-muted-foreground flex cursor-pointer py-2 hover:underline">
                                 {toolName}의 결과보기
                               </AccordionTrigger>
-                              <AccordionContent>
+                              <AccordionContent asChild className="pb-0">
                                 <CodeBlock className="language-json">
                                   {children}
                                 </CodeBlock>
@@ -148,12 +149,13 @@ function PureMessage({
                         type="single"
                         collapsible
                         key={part.toolInvocation.toolCallId}
+                        asChild
                       >
                         <AccordionItem value="item-1">
-                          <AccordionTrigger className="text-muted-foreground flex cursor-pointer hover:underline">
+                          <AccordionTrigger className="text-muted-foreground flex cursor-pointer py-2 hover:underline">
                             {toolName}의 결과보기
                           </AccordionTrigger>
-                          <AccordionContent>
+                          <AccordionContent asChild className="pb-0">
                             <CodeBlock className="language-json">
                               {children}
                             </CodeBlock>
