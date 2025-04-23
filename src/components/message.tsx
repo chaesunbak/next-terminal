@@ -65,7 +65,8 @@ function PureMessage({
             "flex flex-col gap-2 rounded-xl px-4 py-2 whitespace-pre-wrap",
             {
               "bg-primary text-primary-foreground": message.role === "user",
-              "text-primary bg-gray-100": message.role === "assistant",
+              "text-primary dark:bg-primary dark:text-primary-foreground bg-gray-100":
+                message.role === "assistant",
             },
             "max-w-full",
           )}

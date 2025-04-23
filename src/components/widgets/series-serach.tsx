@@ -131,7 +131,7 @@ function Item({ series }: ItemProps) {
 
         setRecent([series, ...filteredRecent].slice(0, 10));
       }}
-      className="flex cursor-pointer items-center justify-between rounded-md border p-2 hover:bg-gray-100"
+      className="flex cursor-pointer items-center justify-between rounded-md border p-2 hover:bg-gray-100 dark:hover:bg-gray-500"
       title={series?.notes}
     >
       <div>{series.title}</div>

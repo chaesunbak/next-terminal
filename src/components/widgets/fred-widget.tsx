@@ -107,15 +107,15 @@ export function FredWidget({ title, dataKey }: FredWidgetProps) {
             dot={false}
           />
           <Tooltip content={<ChartTooltipContent />} />
-          <Brush
+          {/* <Brush
             dataKey="date"
             height={15}
-            stroke="#D3D3D3"
+            // stroke="#D3D3D3"
             startIndex={
               observations.length - Math.min(360 * 5, observations.length)
             }
             className="cancel-drag"
-          />
+          /> */}
         </LineChart>
       </ChartContainer>
       <H5 className="absolute right-2 bottom-2 z-10">

@@ -4,7 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { AppNavigationMenu } from "@/components/app-navigation-menu";
-import { QueryClientProvider } from "@/providers/query-client-provider";
+import { GlobalProvider } from "@/providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,21 +17,20 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AI Chatbot",
-  description: "AI Chatbot",
+  title: "Next Terminal",
+  description: "Economic Dashboard",
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased transition-colors duration-300`}
       >
-        <QueryClientProvider>
-          <AppNavigationMenu className="flex w-full flex-none p-2" />
+        <GlobalProvider>
           {children}
           <Toaster richColors />
-        </QueryClientProvider>
+        </GlobalProvider>
       </body>
     </html>
   );

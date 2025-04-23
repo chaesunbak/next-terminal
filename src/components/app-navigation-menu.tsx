@@ -16,6 +16,7 @@ import { SeriesSearch } from "./widgets/series-serach";
 import { useWidgetStore } from "@/store/widget-store";
 import { Button } from "@/components/ui/button";
 import { TickerSearch } from "./widgets/ticker-search";
+import { ThemeToggle } from "./theme-toggle";
 
 interface AppNavigationMenuProps {
   className?: string;
@@ -58,6 +59,7 @@ export function AppNavigationMenu({ className }: AppNavigationMenuProps) {
       >
         <Eraser className="h-4 w-4" />
       </Button>
+      <ThemeToggle />
     </NavigationMenu>
   );
 }
