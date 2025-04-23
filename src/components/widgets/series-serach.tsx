@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { Search, Loader2, Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ interface SeriesSearchProps {
 }
 
 export function SeriesSearch({ className }: SeriesSearchProps) {
+  const t = useTranslations("Series");
   const [data, setData] = useState<FredSeriesSearchResponse | null>(null);
   const [recent] = useLocalStorage<FredSeriesItem[]>(
     "recently-used-series",
@@ -54,21 +56,21 @@ export function SeriesSearch({ className }: SeriesSearchProps) {
 
   return (
     <div className={cn("flex flex-col gap-2", className)}>
-      <H3>Search for FRED Series</H3>
+      <H3>{t("title")}</H3>
       <div className="flex gap-2">
         <Input
           type="text"
-          placeholder="Search for a series"
+          placeholder={t("searchPlaceholder")}
           defaultValue=""
           ref={inputRef}
         />
         <Button onClick={handleSearch}>
           <Search className="h-4 w-4" />
-          Search
+          {t("search")}
         </Button>
       </div>
       <div className="flex max-h-[500px] min-h-[500px] flex-col gap-2 overflow-y-auto">
-        <Muted>Recently Used</Muted>
+        <Muted>{t("recentlyUsed")}</Muted>
         {recent.map((item) => (
           <Item key={item.id} series={item} />
         ))}
@@ -83,12 +85,12 @@ export function SeriesSearch({ className }: SeriesSearchProps) {
         {/* 검색 결과 */}
         {!isLoading && data?.seriess && (
           <div className="flex flex-col gap-2">
-            <Muted>Search Results</Muted>
+            <Muted>{t("searchResults")}</Muted>
             {data.seriess.length > 0 ? (
               data.seriess.map((item) => <Item key={item.id} series={item} />)
             ) : (
               <div className="m-auto flex h-full w-full items-center justify-center">
-                <p className="text-muted-foreground">No results found.</p>
+                <p className="text-muted-foreground">{t("noResults")}</p>
               </div>
             )}
           </div>

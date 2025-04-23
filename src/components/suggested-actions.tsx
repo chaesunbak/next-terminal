@@ -7,6 +7,7 @@ import { type UseChatHelpers } from "@ai-sdk/react";
 import { type Tool } from "@/store/tool-store";
 import { cn } from "@/lib/utils";
 import { useToolStore } from "@/store/tool-store";
+import { useTranslations } from "next-intl";
 
 interface SuggestedActionsProps {
   append: UseChatHelpers["append"];
@@ -14,43 +15,40 @@ interface SuggestedActionsProps {
 }
 
 interface SuggestedAction {
-  title: string;
-  label: string;
+  titleKey: string;
+  labelKey: string;
   tools: Tool[];
-  action: string;
+  actionKey: string;
 }
 
 function PureSuggestedActions({ append, className }: SuggestedActionsProps) {
   const { setSelectedTools } = useToolStore();
+  const t = useTranslations("SuggestedActions");
 
   const suggestedActions: SuggestedAction[] = [
     {
-      title: "Current Yield Curve",
-      label: "Is it inverted?",
+      titleKey: "yieldCurve.title",
+      labelKey: "yieldCurve.label",
       tools: ["fred"],
-      action:
-        "First, can you help me find the relevant treasury yield indicators in FRED? Then analyze the current yield curve and tell me if it's inverted or not. What does this suggest about the economy?",
+      actionKey: "yieldCurve.action",
     },
     {
-      title: "Inflation Trend",
-      label: "CPI and core inflation",
+      titleKey: "inflation.title",
+      labelKey: "inflation.label",
       tools: ["fred"],
-      action:
-        "Can you search for CPI and core inflation indicators in FRED? Then show me the recent inflation trends over the past 12 months. Are inflation rates increasing or decreasing?",
+      actionKey: "inflation.action",
     },
     {
-      title: "Stock Performance",
-      label: "Top tech companies",
+      titleKey: "stocks.title",
+      labelKey: "stocks.label",
       tools: ["alphavantage"],
-      action:
-        "Could you look up the stock performance of major tech companies like Apple, Microsoft, and Google using AlphaVantage? Which one has performed the best over the past 3 months?",
+      actionKey: "stocks.action",
     },
     {
-      title: "Economic Health Check",
-      label: "GDP and unemployment",
+      titleKey: "economic.title",
+      labelKey: "economic.label",
       tools: ["fred"],
-      action:
-        "Please help me find GDP growth rate and unemployment rate indicators in FRED. What do these indicators tell us about the current state of the economy?",
+      actionKey: "economic.action",
     },
   ];
 
@@ -68,7 +66,7 @@ function PureSuggestedActions({ append, className }: SuggestedActionsProps) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           transition={{ delay: 0.05 * index }}
-          key={`suggested-action-${suggestedAction.title}-${index}`}
+          key={`suggested-action-${suggestedAction.titleKey}-${index}`}
           className={index > 1 ? "hidden sm:block" : "block"}
         >
           <Button
@@ -78,16 +76,16 @@ function PureSuggestedActions({ append, className }: SuggestedActionsProps) {
               await new Promise((resolve) => setTimeout(resolve, 1000));
               append({
                 role: "user",
-                content: suggestedAction.action,
+                content: t(suggestedAction.actionKey),
               });
             }}
             className="h-auto w-full flex-1 items-start justify-start gap-1 overflow-hidden rounded-xl border px-3 py-3 text-left text-sm sm:flex-col"
           >
             <span className="truncate font-medium">
-              {suggestedAction.title}
+              {t(suggestedAction.titleKey)}
             </span>
             <span className="text-muted-foreground truncate">
-              {suggestedAction.label}
+              {t(suggestedAction.labelKey)}
             </span>
           </Button>
         </motion.div>

@@ -1,0 +1,73 @@
+{
+  "Index": {
+    "title": "Next Terminal",
+    "subtitle": "Analyze financial data more effectively with intuitive data visualization and AI-powered chatbot.",
+    "viewDashboard": "View Dashboard",
+    "exploreFeatures": "Explore Features"
+  },
+  "Features": {
+    "title": "Key Features",
+    "subtitle": "All-in-one solution for market data analysis and AI-driven insights",
+    "realTimeData": {
+      "title": "Real-time Data Visualization",
+      "description": "Get real-time data from FRED, Alpha Vantage, and more displayed in intuitive charts."
+    },
+    "chatbotAssistant": {
+      "title": "AI Chatbot Assistant",
+      "description": "Ask questions about data in natural language and receive immediate answers."
+    },
+    "customDashboard": {
+      "title": "Customizable Dashboard",
+      "description": "Add and arrange widgets to create a personalized dashboard."
+    }
+  },
+  "Demo": {
+    "title": "AI-Powered Data Analysis",
+    "subtitle": "Easily understand and analyze complex financial data",
+    "getStarted": "Get Started"
+  },
+  "Nav": {
+    "home": "Home",
+    "fred": "FRED : Economic Indicators",
+    "alphaVantage": "Alpha Vantage : Stock Market Data",
+    "clearWidgets": "Clear Widgets"
+  },
+  "Series": {
+    "title": "Search for FRED Series",
+    "searchPlaceholder": "Search for a series",
+    "search": "Search",
+    "recentlyUsed": "Recently Used",
+    "searchResults": "Search Results",
+    "noResults": "No results found."
+  },
+  "Ticker": {
+    "title": "Search for Stock Symbols",
+    "searchPlaceholder": "Search for a stock (e.g., AAPL, Microsoft)",
+    "search": "Search",
+    "recentlyUsed": "Recently Used",
+    "searchResults": "Search Results",
+    "noResults": "No results found."
+  },
+  "SuggestedActions": {
+    "yieldCurve": {
+      "title": "Current Yield Curve",
+      "label": "Is it inverted?",
+      "action": "First, can you help me find the relevant treasury yield indicators in FRED? Then analyze the current yield curve and tell me if it's inverted or not. What does this suggest about the economy?"
+    },
+    "inflation": {
+      "title": "Inflation Trend",
+      "label": "CPI and core inflation",
+      "action": "Can you search for CPI and core inflation indicators in FRED? Then show me the recent inflation trends over the past 12 months. Are inflation rates increasing or decreasing?"
+    },
+    "stocks": {
+      "title": "Stock Performance",
+      "label": "Top tech companies",
+      "action": "Could you look up the stock performance of major tech companies like Apple, Microsoft, and Google using AlphaVantage? Which one has performed the best over the past 3 months?"
+    },
+    "economic": {
+      "title": "Economic Health Check",
+      "label": "GDP and unemployment",
+      "action": "Please help me find GDP growth rate and unemployment rate indicators in FRED. What do these indicators tell us about the current state of the economy?"
+    }
+  }
+}

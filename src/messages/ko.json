@@ -1,0 +1,73 @@
+{
+  "Index": {
+    "title": "Next Terminal",
+    "subtitle": "직관적인 데이터 시각화 및 AI 기반 챗봇으로 금융 데이터를 더 효과적으로 분석하세요.",
+    "viewDashboard": "대시보드 보기",
+    "exploreFeatures": "기능 알아보기"
+  },
+  "Features": {
+    "title": "주요 기능",
+    "subtitle": "시장 데이터 분석과 AI 기반 인사이트를 제공하는 올인원 솔루션",
+    "realTimeData": {
+      "title": "실시간 데이터 시각화",
+      "description": "FRED, Alpha Vantage 등에서 실시간으로 데이터를 가져와 직관적인 차트로 표시합니다."
+    },
+    "chatbotAssistant": {
+      "title": "AI 챗봇 어시스턴트",
+      "description": "데이터에 대한 질문을 자연어로 물어보고 즉시 답변을 받을 수 있습니다."
+    },
+    "customDashboard": {
+      "title": "커스터마이즈 가능한 대시보드",
+      "description": "필요한 위젯을 추가하고 배치하여 맞춤형 대시보드를 구성할 수 있습니다."
+    }
+  },
+  "Demo": {
+    "title": "AI 기반 데이터 분석",
+    "subtitle": "복잡한 금융 데이터를 쉽게 이해하고 분석할 수 있습니다",
+    "getStarted": "시작하기"
+  },
+  "Nav": {
+    "home": "홈",
+    "fred": "FRED : 경제 지표",
+    "alphaVantage": "Alpha Vantage : 주식 시장 데이터",
+    "clearWidgets": "위젯 초기화"
+  },
+  "Series": {
+    "title": "FRED 시리즈 검색",
+    "searchPlaceholder": "시리즈 검색",
+    "search": "검색",
+    "recentlyUsed": "최근 사용",
+    "searchResults": "검색 결과",
+    "noResults": "결과를 찾을 수 없습니다."
+  },
+  "Ticker": {
+    "title": "주식 심볼 검색",
+    "searchPlaceholder": "주식 검색 (예: AAPL)",
+    "search": "검색",
+    "recentlyUsed": "최근 사용",
+    "searchResults": "검색 결과",
+    "noResults": "결과를 찾을 수 없습니다."
+  },
+  "SuggestedActions": {
+    "yieldCurve": {
+      "title": "현재 수익률 곡선",
+      "label": "역전 여부는?",
+      "action": "먼저 FRED에서 관련 국채 수익률 지표를 찾아주시겠어요? 그리고 현재 수익률 곡선이 역전되었는지 분석해주세요. 이것이 경제에 대해 무엇을 시사하나요?"
+    },
+    "inflation": {
+      "title": "인플레이션 추세",
+      "label": "CPI 및 핵심 인플레이션",
+      "action": "FRED에서 CPI 및 핵심 인플레이션 지표를 검색해주시겠어요? 그리고 지난 12개월 동안의 최근 인플레이션 추세를 보여주세요. 인플레이션율이 상승하고 있나요, 아니면 하락하고 있나요?"
+    },
+    "stocks": {
+      "title": "주식 성과",
+      "label": "주요 기술 기업들",
+      "action": "AlphaVantage를 사용하여 애플, 마이크로소프트, 구글과 같은 주요 기술 기업의 주식 성과를 확인해 주시겠어요? 지난 3개월 동안 어떤 기업이 가장 좋은 성과를 보였나요?"
+    },
+    "economic": {
+      "title": "경제 건강 체크",
+      "label": "GDP 및 실업률",
+      "action": "FRED에서 GDP 성장률과 실업률 지표를 찾아주세요. 이러한 지표들이 현재 경제 상태에 대해 무엇을 알려주나요?"
+    }
+  }
+}

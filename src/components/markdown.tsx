@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { memo } from "react";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -6,6 +5,7 @@ import rehypeRaw from "rehype-raw";
 
 import { CodeBlock } from "./code-block";
 import { H1, H2, H3, H4, H5, H6, P } from "./ui/typography";
+import { Link } from "@/i18n/navigation";
 
 const components: Partial<Components> = {
   // @ts-expect-error

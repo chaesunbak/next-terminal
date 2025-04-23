@@ -1,25 +1,15 @@
 "use client";
 
 import { useRef } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useInView,
-  MotionValue,
-} from "framer-motion";
-import Link from "next/link";
-import {
-  ArrowRight,
-  BarChart4,
-  Terminal,
-  PieChart,
-  TrendingUp,
-  MessageSquare,
-} from "lucide-react";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
+
+import { ArrowRight, BarChart4, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 export default function HeroPage() {
+  const t = useTranslations();
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: false, amount: 0.1 });
   const { scrollYProgress } = useScroll({
@@ -84,8 +74,7 @@ export default function HeroPage() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-muted-foreground mt-6 max-w-3xl text-xl"
         >
-          Analyze financial data more effectively with intuitive data
-          visualization and AI-powered chatbot.
+          {t("Index.subtitle")}
         </motion.p>
 
         <motion.div
@@ -96,11 +85,11 @@ export default function HeroPage() {
         >
           <Button asChild size="lg" className="gap-2">
             <Link href="/app">
-              View Dashboard <ArrowRight className="h-4 w-4" />
+              {t("Index.viewDashboard")} <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
           <Button asChild variant="outline" size="lg">
-            <Link href="#features">Explore Features</Link>
+            <Link href="#features">{t("Index.exploreFeatures")}</Link>
           </Button>
         </motion.div>
 
@@ -122,31 +111,32 @@ export default function HeroPage() {
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,rgba(var(--primary-rgb),0.1),transparent_70%)]" />
 
         <div className="mb-16 text-center">
-          <h2 className="text-4xl font-bold tracking-tight">Key Features</h2>
+          <h2 className="text-4xl font-bold tracking-tight">
+            {t("Features.title")}
+          </h2>
           <p className="text-muted-foreground mt-4 text-xl">
-            All-in-one solution for market data analysis and AI-driven insights
+            {t("Features.subtitle")}
           </p>
         </div>
 
         <div className="grid max-w-6xl gap-8 md:grid-cols-2 lg:grid-cols-3">
           <FeatureCard
             icon={BarChart4}
-            title="Real-time Data Visualization"
-            description="Get real-time data from FRED, Alpha Vantage, and more displayed in intuitive charts."
+            title={t("Features.realTimeData.title")}
+            description={t("Features.realTimeData.description")}
             delay={0.1}
           />
-
           <FeatureCard
             icon={MessageSquare}
-            title="AI Chatbot Assistant"
-            description="Ask questions about data in natural language and receive immediate answers."
-            delay={0.5}
+            title={t("Features.chatbotAssistant.title")}
+            description={t("Features.chatbotAssistant.description")}
+            delay={0.2}
           />
           <FeatureCard
             icon={ArrowRight}
-            title="Customizable Dashboard"
-            description="Add and arrange widgets to create a personalized dashboard."
-            delay={0.6}
+            title={t("Features.customDashboard.title")}
+            description={t("Features.customDashboard.description")}
+            delay={0.3}
           />
         </div>
       </motion.section>
@@ -165,10 +155,10 @@ export default function HeroPage() {
           className="mb-16 text-center"
         >
           <h2 className="text-4xl font-bold tracking-tight">
-            AI-Powered Data Analysis
+            {t("Demo.title")}
           </h2>
           <p className="text-muted-foreground mt-4 text-xl">
-            Easily understand and analyze complex financial data
+            {t("Demo.subtitle")}
           </p>
         </motion.div>
 
@@ -234,8 +224,8 @@ export default function HeroPage() {
           className="mt-16"
         >
           <Button asChild size="lg" className="gap-2">
-            <Link href="/">
-              Get Started <ArrowRight className="h-4 w-4" />
+            <Link href="/app">
+              {t("Demo.getStarted")} <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
         </motion.div>
