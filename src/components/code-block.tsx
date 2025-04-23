@@ -31,7 +31,7 @@ export function CodeBlock({ className, children, ...props }: CodeBlockProps) {
     return (
       <code
         className={cn(
-          "inline rounded-md bg-zinc-100 px-1 py-0.5 text-sm whitespace-nowrap dark:bg-zinc-800",
+          "inline rounded-md bg-zinc-200 px-1 py-0.5 text-sm whitespace-nowrap dark:bg-zinc-800",
           className,
         )}
         {...props}

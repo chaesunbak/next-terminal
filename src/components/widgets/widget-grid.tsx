@@ -35,11 +35,7 @@ export function WidgetGrid({ className }: WidgetGridProps) {
     >
       {widgets.map((widget) => (
         <div key={widget.id} className="bg-card flex h-full w-full">
-          <Widget
-            id={widget.id}
-            title={widget.title}
-            dataKey={widget.dataKey}
-          />
+          <Widget widget={widget} />
         </div>
       ))}
     </ResponsiveGridLayout>

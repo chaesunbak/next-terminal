@@ -2,12 +2,24 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { type Layout } from "react-grid-layout";
 
-type Widget = {
+interface BaseWidget {
   id: string;
   title: string;
-  dataKey: string;
   layout: Layout;
-};
+  type: string;
+}
+
+interface FredWidget extends BaseWidget {
+  type: "fred";
+  dataKey: string;
+}
+
+interface StockWidget extends BaseWidget {
+  type: "stock";
+  symbol: string;
+}
+
+export type Widget = FredWidget | StockWidget;
 
 interface WidgetState {
   widgets: Widget[];

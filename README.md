@@ -1,66 +1,73 @@
-# Local LLM Chat with Ollama
+# Next Terminal
 
-이 프로젝트는 Ollama를 활용하여 로컬 환경에서 LLM(Large Language Model)을 실행하는 Next.js 기반 채팅 애플리케이션입니다.
+This project is a dashboard application that visualizes economic data and stock market information. It allows users to create customized dashboards by displaying data from various sources in widget format.
 
-## 프로젝트 개요
+## Key Features
 
-이 프로젝트는 다음과 같은 기능을 제공합니다:
+- 📊 FRED (Federal Reserve Economic Data) economic indicator widgets
+- 📈 AlphaVantage stock market data widgets
+- 🔍 Search functionality for stock symbols and economic indicators
+- 🧩 Drag and drop widget placement and resizing
+- 📱 Responsive layout
+- 💾 Local storage of widget configurations
 
-- Ollama를 사용한 로컬 LLM 모델 실행
-- 실시간 채팅 인터페이스
-- 다양한 LLM 모델 선택 기능
-- 채팅 기록 저장 및 관리
+## Technology Stack
 
-## 기술 스택
+- **Frontend**: Next.js 14, React, TypeScript
+- **UI**: TailwindCSS, Radix UI
+- **State Management**: Zustand
+- **Data Fetching**: TanStack Query (React Query)
+- **Chart Visualization**: Recharts
+- **Layout**: React Grid Layout
 
-- Frontend: Next.js 14, React, TailwindCSS
-- Backend: Next.js API Routes
-- LLM: Ollama
-- 기타: TypeScript
+## APIs Used
 
-## 시작하기
+- [FRED (Federal Reserve Economic Data) API](https://fred.stlouisfed.org/docs/api/fred/)
+- [AlphaVantage API](https://www.alphavantage.co/documentation/)
 
-### 사전 요구사항
+## Getting Started
 
-1. [Ollama 설치](https://ollama.ai/download)
-2. Node.js 18.0.0 이상
-3. npm 또는 yarn
+### Prerequisites
 
-### 설치 방법
+1. [Node.js](https://nodejs.org/) 18.0.0 or higher
+2. FRED API key ([Get it here](https://fred.stlouisfed.org/docs/api/api_key.html))
+3. AlphaVantage API key ([Get it here](https://www.alphavantage.co/support/#api-key))
+
+### Installation
 
 ```bash
-# 저장소 클론
-git clone [your-repository-url]
+# Clone the repository
+git clone [repository-url]
+cd economic-dashboard
 
-# 의존성 설치
+# Install dependencies
 npm install
-# 또는
+# or
 yarn install
 
-# 개발 서버 실행
+# Set up environment variables
+cp .env.example .env.local
+# Edit the .env.local file to add your API keys
+
+# Run the development server
 npm run dev
-# 또는
+# or
 yarn dev
 ```
 
-서버가 실행되면 [http://localhost:3000](http://localhost:3000)에서 애플리케이션을 확인할 수 있습니다.
+Once the server is running, you can access the application at [http://localhost:3000](http://localhost:3000).
 
-## 주요 기능
+## License
 
-- 💬 실시간 채팅 인터페이스
-- 🤖 다양한 LLM 모델 지원
-- 💾 채팅 기록 저장
-- 🎨 사용자 친화적인 UI
-- ⚡ 빠른 응답 속도
+This project is licensed under the MIT License.
 
-## 기여하기
+### Third-Party Licenses
 
-프로젝트 기여는 언제나 환영합니다. 버그 리포트, 새로운 기능 제안 또는 풀 리퀘스트를 통해 참여해주세요.
+This project uses the following third-party libraries and APIs, each with their respective licenses:
 
-## 라이선스
+- **FRED MCP Library**: [MIT License](https://opensource.org/licenses/MIT)
+  - A library for interacting with the Federal Reserve Economic Data API.
+- **AlphaVantage API**: [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+  - API for real-time and historical stock market data.
 
-MIT License
-
-## 문의사항
-
-문의사항이 있으시면 이슈를 생성해주세요.
+We are grateful to the maintainers and contributors of these libraries and APIs.

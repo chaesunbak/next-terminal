@@ -1,16 +1,17 @@
 import { streamText, type Message, createIdGenerator } from "ai";
 import { NextResponse } from "next/server";
-import { experimental_createMCPClient as createMCPClient } from "ai";
+import { experimental_createMCPClient as createMCPClient, tool } from "ai";
 import { Experimental_StdioMCPTransport as StdioMCPTransport } from "ai/mcp-stdio";
 import { createVertex } from "@ai-sdk/google-vertex";
-import { type Tool } from "@/store/tool-store";
+import { type Tool as ToolType } from "@/store/tool-store";
+import { z } from "zod";
 
 export async function POST(req: Request) {
   try {
     const {
       messages,
       tools: selectedTools = [],
-    }: { messages: Message[]; tools?: Tool[] } = await req.json();
+    }: { messages: Message[]; tools?: ToolType[] } = await req.json();
 
     const vertex = createVertex({
       project: "ir-agent",
@@ -76,10 +77,22 @@ export async function POST(req: Request) {
       activeTools = { ...alphaVantageToolSet };
     }
 
+    const timeOutTool = tool({
+      description: "A tool to set a timeout for the agent",
+      parameters: z.object({
+        timeout: z.number(),
+      }),
+      execute: async ({ timeout }) => {
+        await new Promise((resolve) => setTimeout(resolve, timeout * 1000));
+      },
+    });
+
+    activeTools = { ...activeTools, timeOutTool };
+
     const result = streamText({
       model: model,
       system:
-        "You are a helpful assistant that can answer questions and help with tasks about investing. Use the tools provided to answer questions and help with tasks.",
+        "You are a friendly assistant! Keep your responses concise and helpful.",
       messages: messages,
       tools: activeTools,
       maxSteps: 5,

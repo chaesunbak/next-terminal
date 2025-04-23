@@ -50,7 +50,7 @@ export function Chat({ className }: ChatProps) {
   return (
     <section
       className={cn(
-        "bg-background flex flex-1 flex-col rounded-lg border",
+        "bg-background flex flex-1 flex-col rounded-lg border transition-all duration-300",
         className,
       )}
     >

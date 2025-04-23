@@ -14,28 +14,28 @@ const components: Partial<Components> = {
   ol: ({ children, ...props }) => {
     return (
       <ol
-        className="ml-2 flex list-outside list-decimal flex-col gap-2"
+        className="m-0 ml-2 flex list-outside list-decimal flex-col space-y-2 p-0"
         {...props}
       >
         {children}
       </ol>
     );
   },
-  li: ({ children, ...props }) => {
-    return (
-      <li className="flex flex-col gap-2 py-1" {...props}>
-        <div>{children}</div>
-      </li>
-    );
-  },
   ul: ({ children, ...props }) => {
     return (
       <ul
-        className="ml-2 flex list-outside list-disc flex-col gap-2"
+        className="m-0 ml-2 flex list-outside list-disc flex-col space-y-2 p-0"
         {...props}
       >
         {children}
       </ul>
+    );
+  },
+  li: ({ children, ...props }) => {
+    return (
+      <li className="py-0" {...props}>
+        {children}
+      </li>
     );
   },
   strong: ({ children, ...props }) => {

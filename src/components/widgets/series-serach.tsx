@@ -123,6 +123,7 @@ function Item({ series }: ItemProps) {
           id,
           title: series.title,
           dataKey: series.id,
+          type: "fred",
           layout: { i: id, x: 0, y: 0, w: 4, h: 4, minW: 4, minH: 4 },
         });
 

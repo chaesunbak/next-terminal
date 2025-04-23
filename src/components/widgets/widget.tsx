@@ -1,143 +1,45 @@
-"use client";
-
-import { useQuery } from "@tanstack/react-query";
+import { Trash2 } from "lucide-react";
+import { type Widget } from "@/store/widget-store";
+import { FredWidget } from "./fred-widget";
+import { StockWidget } from "./stock-widget";
 import {
-  Line,
-  LineChart,
-  Tooltip,
-  XAxis,
-  CartesianGrid,
-  Brush,
-} from "recharts";
-import { X } from "lucide-react";
-
-import {
-  ChartContainer,
-  ChartTooltipContent,
-  type ChartConfig,
-} from "@/components/ui/chart";
-import { H4, H5 } from "@/components/ui/typography";
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
 import { useWidgetStore } from "@/store/widget-store";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "#D3D3D3",
-  },
-} satisfies ChartConfig;
+const WidgetComponents = {
+  fred: ({ id, title, dataKey }: any) => (
+    <FredWidget id={id} title={title} dataKey={dataKey} />
+  ),
+  stock: ({ id, symbol }: any) => <StockWidget id={id} symbol={symbol} />,
+};
 
-interface WidgetProps {
-  id: string;
-  title: string;
-  dataKey: string;
-}
+export function Widget({ widget }: { widget: Widget }) {
+  const { removeWidget } = useWidgetStore();
 
-export function Widget({ id, title, dataKey }: WidgetProps) {
-  const { removeWidget } = useWidgetStore((state) => state);
+  const WidgetComponent =
+    WidgetComponents[widget.type as keyof typeof WidgetComponents];
 
-  const { data, isPending, error } = useQuery({
-    queryKey: ["series", dataKey],
-    queryFn: async () => {
-      try {
-        const res = await fetch(`/api/series/${dataKey}`);
-        const fetchedData = await res.json();
-
-        if (fetchedData.error) {
-          throw new Error(fetchedData.error);
-        }
-
-        console.log("Fetched data:", fetchedData);
-        return fetchedData;
-      } catch (err) {
-        console.error("Error fetching data:", err);
-        throw err;
-      }
-    },
-  });
-
-  if (isPending) {
-    return (
-      <Skeleton className="flex h-full w-full animate-pulse cursor-grab flex-col rounded-lg border bg-slate-100 p-2" />
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex h-full w-full cursor-grab flex-col rounded-lg border p-2">
-        <H4 className="absolute top-2 left-2 z-10">{title}</H4>
-        <p className="m-auto text-red-500">{(error as Error).message}</p>
-      </div>
-    );
-  }
-
-  if (!data || !data.observations || data.observations.length < 2) {
-    return (
-      <div className="flex h-full w-full cursor-grab flex-col rounded-lg border p-2">
-        <H4 className="absolute top-2 left-2 z-10">{title}</H4>
-        <p className="m-auto">Could not find data</p>
-      </div>
-    );
-  }
-
-  const observations = data.observations;
-  const lastObservation = observations[observations.length - 1];
-
-  console.log("Last observation:", lastObservation);
-
-  const isUp =
-    observations.length >= 2 &&
-    observations[observations.length - 1].value >
-      observations[observations.length - 2].value;
-
-  console.log("Is value up:", isUp);
+  if (!WidgetComponent) return null;
 
   return (
-    <div className="group z-100 flex h-full w-full cursor-grab flex-col rounded-lg border p-2">
-      <Button
-        variant="ghost"
-        size="icon"
-        className="cancel-drag absolute top-0.5 right-0.5 z-50 flex flex-none items-center justify-center rounded-full opacity-0 group-hover:opacity-100 hover:bg-gray-100 has-[>svg]:p-0.5"
-        onClick={() => removeWidget(id)}
-      >
-        <X className="h-2 w-2" />
-      </Button>
-      <H4 className="absolute top-2 left-2 z-10 leading-none">{title}</H4>
-      <ChartContainer config={chartConfig} className="flex h-full w-full">
-        <LineChart
-          data={observations}
-          margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
+    <ContextMenu>
+      <ContextMenuTrigger className="h-full w-full">
+        <WidgetComponent {...widget} />
+      </ContextMenuTrigger>
+
+      <ContextMenuContent>
+        <ContextMenuItem
+          variant="destructive"
+          onClick={() => removeWidget(widget.id)}
         >
-          <defs>
-            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#129a74" stopOpacity={0.1} />
-              <stop offset="95%" stopColor="#FFFFFF" stopOpacity={0.1} />
-            </linearGradient>
-          </defs>
-          <XAxis dataKey="date" />
-          <CartesianGrid strokeDasharray="3 3" />
-          <Line
-            type="monotone"
-            dataKey="value"
-            stroke={isUp ? "#10b981" : "#ef4444"}
-            dot={false}
-          />
-          <Tooltip content={<ChartTooltipContent />} />
-          <Brush
-            dataKey="date"
-            height={15}
-            stroke="#D3D3D3"
-            startIndex={
-              observations.length - Math.min(360 * 5, observations.length)
-            }
-            className="cancel-drag"
-          />
-        </LineChart>
-      </ChartContainer>
-      <H5 className="absolute right-2 bottom-2 z-10">
-        {lastObservation?.value ?? "N/A"}
-      </H5>
-    </div>
+          <Trash2 className="mr-2 h-4 w-4" />
+          Delete Widget
+        </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
   );
 }

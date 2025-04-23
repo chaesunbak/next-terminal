@@ -8,6 +8,7 @@ import clsx from "clsx";
 import { Check, Clipboard } from "lucide-react";
 import equal from "fast-deep-equal";
 // import Image from "next/image";
+import { Hammer } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Markdown } from "./markdown";
@@ -19,7 +20,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { AddWidgetButton } from "./widgets/add-widget-button";
+import {
+  AddFredWidgetButton,
+  AddStockWidgetButton,
+} from "./widgets/add-widget-button";
+
 interface MessageProps {
   message: UIMessage;
   isLoading: boolean;
@@ -50,14 +55,14 @@ function PureMessage({
   return (
     <AnimatePresence>
       <motion.div
-        className="group flex w-full max-w-md flex-col items-start justify-start space-y-2"
+        className="group flex w-full max-w-md flex-col items-start justify-start gap-2"
         initial={{ y: 5, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
       >
         <div
           key={message.id}
           className={clsx(
-            "flex flex-col space-y-2 rounded-xl px-4 py-2 whitespace-pre-wrap",
+            "flex flex-col gap-2 rounded-xl px-4 py-2 whitespace-pre-wrap",
             {
               "bg-primary text-primary-foreground": message.role === "user",
               "text-primary bg-gray-100": message.role === "assistant",
@@ -99,7 +104,7 @@ function PureMessage({
                           key={part.toolInvocation.toolCallId}
                           className="text-red-400"
                         >
-                          {toolName}호출시 에러가 발생했습니다.
+                          {toolName} call failed.
                         </div>
                       );
                     }
@@ -130,7 +135,10 @@ function PureMessage({
                           >
                             <AccordionItem value="item-1">
                               <AccordionTrigger className="text-muted-foreground flex cursor-pointer py-2 hover:underline">
-                                {toolName}의 결과보기
+                                <div className="flex items-center gap-2">
+                                  <Hammer className="h-4 w-4" />
+                                  See {toolName} results
+                                </div>
                               </AccordionTrigger>
                               <AccordionContent asChild className="pb-0">
                                 <CodeBlock className="language-json">
@@ -139,7 +147,47 @@ function PureMessage({
                               </AccordionContent>
                             </AccordionItem>
                           </Accordion>
-                          <AddWidgetButton title={title} dataKey={series_id} />
+                          <AddFredWidgetButton
+                            title={title}
+                            dataKey={series_id}
+                          />
+                        </>
+                      );
+                    }
+
+                    if (toolName === "company_overview") {
+                      const result = JSON.parse(content[0].text);
+
+                      const symbol = result.symbol;
+
+                      return (
+                        <>
+                          <Accordion
+                            type="single"
+                            collapsible
+                            key={part.toolInvocation.toolCallId}
+                            asChild
+                          >
+                            <AccordionItem value="item-1">
+                              <AccordionTrigger className="text-muted-foreground flex cursor-pointer py-2 hover:underline">
+                                <div className="flex items-center gap-2">
+                                  <Hammer className="h-4 w-4" />
+                                  See {toolName} results
+                                </div>
+                              </AccordionTrigger>
+                              <AccordionContent asChild className="pb-0">
+                                <CodeBlock className="language-json">
+                                  {children}
+                                </CodeBlock>
+                              </AccordionContent>
+                            </AccordionItem>
+                          </Accordion>
+                          {symbol && (
+                            <AddStockWidgetButton
+                              title={symbol}
+                              symbol={symbol}
+                            />
+                          )}
                         </>
                       );
                     }
@@ -153,7 +201,10 @@ function PureMessage({
                       >
                         <AccordionItem value="item-1">
                           <AccordionTrigger className="text-muted-foreground flex cursor-pointer py-2 hover:underline">
-                            {toolName}의 결과보기
+                            <div className="flex items-center gap-2">
+                              <Hammer className="h-4 w-4" />
+                              See {toolName} results
+                            </div>
                           </AccordionTrigger>
                           <AccordionContent asChild className="pb-0">
                             <CodeBlock className="language-json">

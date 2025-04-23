@@ -92,7 +92,7 @@ export function H6({ children, className, ...props }: TypographyProps) {
 
 export function P({ children, className, ...props }: TypographyProps) {
   return (
-    <p className={cn("text-sm leading-7 sm:text-base", className)} {...props}>
+    <p className={cn("text-sm leading-6 sm:text-base", className)} {...props}>
       {children}
     </p>
   );

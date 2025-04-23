@@ -15,6 +15,7 @@ import {
 import { SeriesSearch } from "./widgets/series-serach";
 import { useWidgetStore } from "@/store/widget-store";
 import { Button } from "@/components/ui/button";
+import { TickerSearch } from "./widgets/ticker-search";
 
 interface AppNavigationMenuProps {
   className?: string;
@@ -44,7 +45,7 @@ export function AppNavigationMenu({ className }: AppNavigationMenuProps) {
             <span className="sm:hidden">Alpha Vantage</span>
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <div className="min-w-md">Alpha Vantage : Stock Market Data</div>
+            <TickerSearch className="min-w-md" />
           </NavigationMenuContent>
         </NavigationMenuItem>
       </NavigationMenuList>

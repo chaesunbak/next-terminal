@@ -11,16 +11,16 @@ from alphavantage_mcp_server.api import (
     fetch_quote,
     fetch_intraday,
     fetch_time_series_daily,
-    fetch_time_series_daily_adjusted,
+    # fetch_time_series_daily_adjusted,
     fetch_time_series_weekly,
     fetch_time_series_weekly_adjusted,
     fetch_time_series_monthly,
     fetch_time_series_monthly_adjusted,
-    fetch_realtime_bulk_quotes,
+    # fetch_realtime_bulk_quotes,
     search_endpoint,
     fetch_market_status,
-    fetch_realtime_options,
-    fetch_historical_options,
+    # fetch_realtime_options,
+    # fetch_historical_options,
     fetch_news_sentiment,
     fetch_top_gainer_losers,
     fetch_insider_transactions,
@@ -126,17 +126,17 @@ from alphavantage_mcp_server.api import (
 class AlphavantageTools(str, Enum):
     TIME_SERIES_INTRADAY = "time_series_intraday"
     TIME_SERIES_DAILY = "time_series_daily"
-    TIME_SERIES_DAILY_ADJUSTED = "time_series_daily_adjusted"
+    # TIME_SERIES_DAILY_ADJUSTED = "time_series_daily_adjusted"
     TIME_SERIES_WEEKLY = "time_series_weekly"
     TIME_SERIES_WEEKLY_ADJUSTED = "time_series_weekly_adjusted"
     TIME_SERIES_MONTHLY = "time_series_monthly"
     TIME_SERIES_MONTHLY_ADJUSTED = "time_series_monthly_adjusted"
     STOCK_QUOTE = "stock_quote"
-    REALTIME_BULK_QUOTES = "realtime_bulk_quotes"
+    # REALTIME_BULK_QUOTES = "realtime_bulk_quotes"
     SYMBOL_SEARCH = "symbol_search"
     MARKET_STATUS = "market_status"
-    REALTIME_OPTIONS = "realtime_options"
-    HISTORICAL_OPTIONS = "historical_options"
+    # REALTIME_OPTIONS = "realtime_options"
+    # HISTORICAL_OPTIONS = "historical_options"
     NEWS_SENTIMENT = "news_sentiment"
     TOP_GAINERS_LOSERS = "top_gainers_losers"
     INSIDER_TRANSACTIONS = "insider_transactions"
@@ -274,27 +274,18 @@ async def list_prompts() -> list[types.Prompt]:
                 )
             ],
         ),
-        types.Prompt(
-            name=AlphavantageTools.TIME_SERIES_DAILY_ADJUSTED.value,
-            description="Fetch a time series daily adjusted",
-            arguments=[
-                types.PromptArgument(
-                    name="symbol", description="Stock symbol", required=True
-                )
-            ],
-        ),
+        # types.Prompt(
+        #     name=AlphavantageTools.TIME_SERIES_DAILY_ADJUSTED.value,
+        #     description="Fetch a time series daily adjusted",
+        #     arguments=[
+        #         types.PromptArgument(
+        #             name="symbol", description="Stock symbol", required=True
+        #         )
+        #     ],
+        # ),
         types.Prompt(
             name=AlphavantageTools.TIME_SERIES_WEEKLY.value,
             description="Fetch a time series weekly",
-            arguments=[
-                types.PromptArgument(
-                    name="symbol", description="Stock symbol", required=True
-                )
-            ],
-        ),
-        types.Prompt(
-            name=AlphavantageTools.TIME_SERIES_WEEKLY_ADJUSTED.value,
-            description="Fetch a time series weekly adjusted",
             arguments=[
                 types.PromptArgument(
                     name="symbol", description="Stock symbol", required=True
@@ -310,24 +301,15 @@ async def list_prompts() -> list[types.Prompt]:
                 )
             ],
         ),
-        types.Prompt(
-            name=AlphavantageTools.TIME_SERIES_MONTHLY_ADJUSTED.value,
-            description="Fetch a time series monthly adjusted",
-            arguments=[
-                types.PromptArgument(
-                    name="symbol", description="Stock symbol", required=True
-                )
-            ],
-        ),
-        types.Prompt(
-            name=AlphavantageTools.REALTIME_BULK_QUOTES.value,
-            description="Fetch real time bulk quotes",
-            arguments=[
-                types.PromptArgument(
-                    name="symbols", description="Stock symbols", required=True
-                )
-            ],
-        ),
+        # types.Prompt(
+        #     name=AlphavantageTools.REALTIME_BULK_QUOTES.value,
+        #     description="Fetch real time bulk quotes",
+        #     arguments=[
+        #         types.PromptArgument(
+        #             name="symbols", description="Stock symbols", required=True
+        #         )
+        #     ],
+        # ),
         types.Prompt(
             name=AlphavantageTools.SYMBOL_SEARCH.value,
             description="Search endpoint",
@@ -342,24 +324,24 @@ async def list_prompts() -> list[types.Prompt]:
             description="Fetch market status",
             arguments=[],
         ),
-        types.Prompt(
-            name=AlphavantageTools.REALTIME_OPTIONS.value,
-            description="Fetch realtime options",
-            arguments=[
-                types.PromptArgument(
-                    name="symbol", description="Stock symbol", required=True
-                )
-            ],
-        ),
-        types.Prompt(
-            name=AlphavantageTools.HISTORICAL_OPTIONS.value,
-            description="Fetch historical options",
-            arguments=[
-                types.PromptArgument(
-                    name="symbol", description="Stock symbol", required=True
-                )
-            ],
-        ),
+        # types.Prompt(
+        #     name=AlphavantageTools.REALTIME_OPTIONS.value,
+        #     description="Fetch realtime options",
+        #     arguments=[
+        #         types.PromptArgument(
+        #             name="symbol", description="Stock symbol", required=True
+        #         )
+        #     ],
+        # ),
+        # types.Prompt(
+        #     name=AlphavantageTools.HISTORICAL_OPTIONS.value,
+        #     description="Fetch historical options",
+        #     arguments=[
+        #         types.PromptArgument(
+        #             name="symbol", description="Stock symbol", required=True
+        #         )
+        #     ],
+        # ),
         types.Prompt(
             name=AlphavantageTools.NEWS_SENTIMENT.value,
             description="Fetch news sentiment",
@@ -1525,19 +1507,19 @@ async def get_prompt(
                 )
             ],
         )
-    if name == AlphavantageTools.TIME_SERIES_DAILY_ADJUSTED.value:
-        symbol = arguments.get("symbol") if arguments else ""
-        return types.GetPromptResult(
-            messages=[
-                types.PromptMessage(
-                    role="user",
-                    content=types.TextContent(
-                        type="text",
-                        text=f"Fetch the time series daily adjusted for the symbol {symbol}",
-                    ),
-                )
-            ],
-        )
+    # if name == AlphavantageTools.TIME_SERIES_DAILY_ADJUSTED.value:
+    #     symbol = arguments.get("symbol") if arguments else ""
+    #     return types.GetPromptResult(
+    #         messages=[
+    #             types.PromptMessage(
+    #                 role="user",
+    #                 content=types.TextContent(
+    #                     type="text",
+    #                     text=f"Fetch the time series daily adjusted for the symbol {symbol}",
+    #                 ),
+    #             )
+    #         ],
+    #     )
     if name == AlphavantageTools.TIME_SERIES_WEEKLY.value:
         symbol = arguments.get("symbol") if arguments else ""
         return types.GetPromptResult(
@@ -1590,19 +1572,19 @@ async def get_prompt(
                 )
             ],
         )
-    if name == AlphavantageTools.REALTIME_BULK_QUOTES.value:
-        symbol = arguments.get("symbol") if arguments else ""
-        return types.GetPromptResult(
-            messages=[
-                types.PromptMessage(
-                    role="user",
-                    content=types.TextContent(
-                        type="text",
-                        text=f"Fetch real time bulk quotes for the symbols {symbol}",
-                    ),
-                )
-            ],
-        )
+    # if name == AlphavantageTools.REALTIME_BULK_QUOTES.value:
+    #     symbol = arguments.get("symbol") if arguments else ""
+    #     return types.GetPromptResult(
+    #         messages=[
+    #             types.PromptMessage(
+    #                 role="user",
+    #                 content=types.TextContent(
+    #                     type="text",
+    #                     text=f"Fetch real time bulk quotes for the symbols {symbol}",
+    #                 ),
+    #             )
+    #         ],
+    #     )
     if name == AlphavantageTools.SYMBOL_SEARCH.value:
         keywords = arguments.get("keywords") if arguments else ""
         return types.GetPromptResult(
@@ -1627,34 +1609,34 @@ async def get_prompt(
                 )
             ],
         )
-    if name == AlphavantageTools.REALTIME_OPTIONS.value:
-        symbol = arguments.get("symbol") if arguments else ""
-        contract = arguments.get("contract") if arguments else ""
-        return types.GetPromptResult(
-            messages=[
-                types.PromptMessage(
-                    role="user",
-                    content=types.TextContent(
-                        type="text",
-                        text=f"Fetch real time options for the symbol {symbol} with contract {contract}",
-                    ),
-                )
-            ],
-        )
-    if name == AlphavantageTools.HISTORICAL_OPTIONS.value:
-        symbol = arguments.get("symbol") if arguments else ""
-        contract = arguments.get("contract") if arguments else ""
-        return types.GetPromptResult(
-            messages=[
-                types.PromptMessage(
-                    role="user",
-                    content=types.TextContent(
-                        type="text",
-                        text=f"Fetch historical options for the symbol {symbol} with contract {contract}",
-                    ),
-                )
-            ],
-        )
+    # if name == AlphavantageTools.REALTIME_OPTIONS.value:
+    #     symbol = arguments.get("symbol") if arguments else ""
+    #     contract = arguments.get("contract") if arguments else ""
+    #     return types.GetPromptResult(
+    #         messages=[
+    #             types.PromptMessage(
+    #                 role="user",
+    #                 content=types.TextContent(
+    #                     type="text",
+    #                     text=f"Fetch real time options for the symbol {symbol} with contract {contract}",
+    #                 ),
+    #             )
+    #         ],
+    #     )
+    # if name == AlphavantageTools.HISTORICAL_OPTIONS.value:
+    #     symbol = arguments.get("symbol") if arguments else ""
+    #     contract = arguments.get("contract") if arguments else ""
+    #     return types.GetPromptResult(
+    #         messages=[
+    #             types.PromptMessage(
+    #                 role="user",
+    #                 content=types.TextContent(
+    #                     type="text",
+    #                     text=f"Fetch historical options for the symbol {symbol} with contract {contract}",
+    #                 ),
+    #             )
+    #         ],
+    #     )
     if name == AlphavantageTools.NEWS_SENTIMENT.value:
         tickers = arguments.get("tickers") if arguments else ""
         topics = arguments.get("topics") if arguments else ""
@@ -2113,19 +2095,19 @@ async def handle_list_tools() -> list[types.Tool]:
                 "required": ["symbol"],
             },
         ),
-        types.Tool(
-            name=AlphavantageTools.TIME_SERIES_DAILY_ADJUSTED.value,
-            description="Fetch a time series daily adjusted",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "symbol": {"type": "string"},
-                    "outputsize": {"type": "string"},
-                    "datatype": {"type": "string"},
-                },
-                "required": ["symbol"],
-            },
-        ),
+        # types.Tool(
+        #     name=AlphavantageTools.TIME_SERIES_DAILY_ADJUSTED.value,
+        #     description="Fetch a time series daily adjusted",
+        #     inputSchema={
+        #         "type": "object",
+        #         "properties": {
+        #             "symbol": {"type": "string"},
+        #             "outputsize": {"type": "string"},
+        #             "datatype": {"type": "string"},
+        #         },
+        #         "required": ["symbol"],
+        #     },
+        # ),
         types.Tool(
             name=AlphavantageTools.TIME_SERIES_WEEKLY.value,
             description="Fetch a time series weekly",
@@ -2174,17 +2156,17 @@ async def handle_list_tools() -> list[types.Tool]:
                 "required": ["symbol"],
             },
         ),
-        types.Tool(
-            name=AlphavantageTools.REALTIME_BULK_QUOTES.value,
-            description="Fetch real time bulk quotes",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "symbols": {"type": "array"},
-                },
-                "required": ["symbols"],
-            },
-        ),
+        # types.Tool(
+        #     name=AlphavantageTools.REALTIME_BULK_QUOTES.value,
+        #     description="Fetch real time bulk quotes",
+        #     inputSchema={
+        #         "type": "object",
+        #         "properties": {
+        #             "symbols": {"type": "array"},
+        #         },
+        #         "required": ["symbols"],
+        #     },
+        # ),
         types.Tool(
             name=AlphavantageTools.SYMBOL_SEARCH.value,
             description="Search endpoint",
@@ -2202,32 +2184,32 @@ async def handle_list_tools() -> list[types.Tool]:
             description="Fetch market status",
             inputSchema={"type": "object", "properties": {}, "required": []},
         ),
-        types.Tool(
-            name=AlphavantageTools.REALTIME_OPTIONS.value,
-            description="Fetch realtime options",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "symbol": {"type": "string"},
-                    "datatype": {"type": "string"},
-                    "contract": {"type": "string"},
-                },
-                "required": ["symbol"],
-            },
-        ),
-        types.Tool(
-            name=AlphavantageTools.HISTORICAL_OPTIONS.value,
-            description="Fetch historical options",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "symbol": {"type": "string"},
-                    "datatype": {"type": "string"},
-                    "contract": {"type": "string"},
-                },
-                "required": ["symbol"],
-            },
-        ),
+        # types.Tool(
+        #     name=AlphavantageTools.REALTIME_OPTIONS.value,
+        #     description="Fetch realtime options",
+        #     inputSchema={
+        #         "type": "object",
+        #         "properties": {
+        #             "symbol": {"type": "string"},
+        #             "datatype": {"type": "string"},
+        #             "contract": {"type": "string"},
+        #         },
+        #         "required": ["symbol"],
+        #     },
+        # ),
+        # types.Tool(
+        #     name=AlphavantageTools.HISTORICAL_OPTIONS.value,
+        #     description="Fetch historical options",
+        #     inputSchema={
+        #         "type": "object",
+        #         "properties": {
+        #             "symbol": {"type": "string"},
+        #             "datatype": {"type": "string"},
+        #             "contract": {"type": "string"},
+        #         },
+        #         "required": ["symbol"],
+        #     },
+        # ),
         types.Tool(
             name=AlphavantageTools.NEWS_SENTIMENT.value,
             description="Fetch news sentiment",
@@ -3692,17 +3674,17 @@ async def handle_call_tool(
                 outputsize = arguments.get("outputsize", "compact")
 
                 result = await fetch_time_series_daily(symbol, datatype, outputsize)
-            case AlphavantageTools.TIME_SERIES_DAILY_ADJUSTED.value:
-                symbol = arguments.get("symbol")
-                if not symbol:
-                    raise ValueError("Missing required argument: symbol")
+            # case AlphavantageTools.TIME_SERIES_DAILY_ADJUSTED.value:
+            #     symbol = arguments.get("symbol")
+            #     if not symbol:
+            #         raise ValueError("Missing required argument: symbol")
 
-                datatype = arguments.get("datatype", "json")
-                outputsize = arguments.get("outputsize", "compact")
+            #     datatype = arguments.get("datatype", "json")
+            #     outputsize = arguments.get("outputsize", "compact")
 
-                result = await fetch_time_series_daily_adjusted(
-                    symbol, datatype, outputsize
-                )
+            #     result = await fetch_time_series_daily_adjusted(
+            #         symbol, datatype, outputsize
+            #     )
             case AlphavantageTools.TIME_SERIES_WEEKLY.value:
                 symbol = arguments.get("symbol")
                 if not symbol:
@@ -3736,13 +3718,13 @@ async def handle_call_tool(
 
                 result = await fetch_time_series_monthly_adjusted(symbol, datatype)
 
-            case AlphavantageTools.REALTIME_BULK_QUOTES.value:
-                symbols = arguments.get("symbols")
-                if not symbols:
-                    raise ValueError("Missing required argument: symbols")
+            # case AlphavantageTools.REALTIME_BULK_QUOTES.value:
+            #     symbols = arguments.get("symbols")
+            #     if not symbols:
+            #         raise ValueError("Missing required argument: symbols")
 
-                datatype = arguments.get("datatype", "json")
-                result = await fetch_realtime_bulk_quotes(symbols, datatype)
+            #     datatype = arguments.get("datatype", "json")
+            #     result = await fetch_realtime_bulk_quotes(symbols, datatype)
 
             case AlphavantageTools.SYMBOL_SEARCH.value:
                 keywords = arguments.get("keywords")
@@ -3755,23 +3737,23 @@ async def handle_call_tool(
             case AlphavantageTools.MARKET_STATUS.value:
                 result = await fetch_market_status()
 
-            case AlphavantageTools.REALTIME_OPTIONS.value:
-                symbol = arguments.get("symbol")
-                if not symbol:
-                    raise ValueError("Missing required argument: symbol")
+            # case AlphavantageTools.REALTIME_OPTIONS.value:
+            #     symbol = arguments.get("symbol")
+            #     if not symbol:
+            #         raise ValueError("Missing required argument: symbol")
 
-                datatype = arguments.get("datatype", "json")
-                contract = arguments.get("contract", "all")
-                result = await fetch_realtime_options(symbol, datatype, contract)
+            #     datatype = arguments.get("datatype", "json")
+            #     contract = arguments.get("contract", "all")
+            #     result = await fetch_realtime_options(symbol, datatype, contract)
 
-            case AlphavantageTools.HISTORICAL_OPTIONS.value:
-                symbol = arguments.get("symbol")
-                if not symbol:
-                    raise ValueError("Missing required argument: symbol")
+            # case AlphavantageTools.HISTORICAL_OPTIONS.value:
+            #     symbol = arguments.get("symbol")
+            #     if not symbol:
+            #         raise ValueError("Missing required argument: symbol")
 
-                datatype = arguments.get("datatype", "json")
-                contract = arguments.get("contract", "all")
-                result = await fetch_historical_options(symbol, datatype, contract)
+            #     datatype = arguments.get("datatype", "json")
+            #     contract = arguments.get("contract", "all")
+            #     result = await fetch_historical_options(symbol, datatype, contract)
 
             case AlphavantageTools.NEWS_SENTIMENT.value:
                 tickers = arguments.get("tickers", [])
